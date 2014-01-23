@@ -16,42 +16,42 @@ GLfloat& point::operator [](unsigned int index)
 	return point_[index];
 }
 
-Polygon::Polygon()
+MyPolygon::MyPolygon()
 {
 }
 
-Polygon::Polygon(vector<point> vertexes)
+MyPolygon::MyPolygon(vector<point> vertexes)
 {
 	if(vertexes.size() > 2)
 		vertexes_ = vertexes;
 }
 
-Polygon& Polygon::operator = (Polygon const & polygon)
+MyPolygon& MyPolygon::operator = (MyPolygon const & MyPolygon)
 {
-	vertexes_ = polygon.vertexes_;
+    vertexes_ = MyPolygon.vertexes_;
 	return *this;
 }
 
-void Polygon::addVertex(const point &vertex)
+void MyPolygon::addVertex(const point &vertex)
 {
 	vertexes_.push_back(vertex);
 }
 
-void Polygon::drawPolygon()
+void MyPolygon::drawMyPolygon()
 {
 
-	//glPolygonMode();
+    //glMyPolygonMode();
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glBegin(GL_POLYGON);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBegin(GL_POLYGON);
 
 	glColor4f(0.20f, 0.20f, 1.00f, 0.5f);
 	for(ushort i=0; i<vertexes_.size(); ++i)
 		glVertex3f(vertexes_[i][0], vertexes_[i][1], vertexes_[i][2]);
 	glEnd();
 	/*
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glBegin(GL_POLYGON);
+    glMyPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glBegin(GL_MyPolygon);
 	glLineWidth(3);
 
 	glColor4f(0.00f, 0.00f, 0.00f, 1.0f);
@@ -77,14 +77,14 @@ void Polygon::drawPolygon()
 
 }
 
-sectionFuncReturn Polygon::polygonSection(vector<GLfloat> plane, Polygon*& polygonPointer1, Polygon*& polygonPointer2)
+sectionFuncReturn MyPolygon::MyPolygonSection(vector<GLfloat> plane, MyPolygon*& MyPolygonPointer1, MyPolygon*& MyPolygonPointer2)
 {
-	if(polygonPointer1 != 0 || polygonPointer2 != 0 || plane.size()<4)
+    if(MyPolygonPointer1 != 0 || MyPolygonPointer2 != 0 || plane.size()<4)
 		;//break;  // Ошибку сделать надо
 
 	GLfloat buf = 0, bufPrevious = 0;
 	// Если эта штука фолс, тогда меняем местами указатели на полигоны в конце.
-	bool relativeProvisionOfPolygons = true;
+    bool relativeProvisionOfMyPolygons = true;
 
 	vector<ushort> more, less, on;
 	vector<point> newVertexes;
@@ -108,7 +108,7 @@ sectionFuncReturn Polygon::polygonSection(vector<GLfloat> plane, Polygon*& polyg
 		{
 			sectionLines.push_back(i);
 			if(buf < 0)
-				relativeProvisionOfPolygons = false;
+                relativeProvisionOfMyPolygons = false;
 		}
 
 
@@ -120,7 +120,7 @@ sectionFuncReturn Polygon::polygonSection(vector<GLfloat> plane, Polygon*& polyg
 		{
 			on.push_back(i);
 			if(bufPrevious > 0)
-				relativeProvisionOfPolygons = false;
+                relativeProvisionOfMyPolygons = false;
 		}
 		bufPrevious = buf;
 		buf = 0;
@@ -155,92 +155,92 @@ sectionFuncReturn Polygon::polygonSection(vector<GLfloat> plane, Polygon*& polyg
 	ushort i=0;
 	if(newVertexes.size() == 2) // Если сечение образует две новых вершины, то делаем два новых полигона
 	{
-		polygonPointer1 = new Polygon();
-		polygonPointer2 = new Polygon();
+        MyPolygonPointer1 = new MyPolygon();
+        MyPolygonPointer2 = new MyPolygon();
 		for(i=0; i<vertexes_.size(); ++i) // Проходим по вершинам
 		{
 			// Если текущая вершина не является концом рассекаемого ребра,
 			// то просто добавляем вершину в новый полигон
 			if(i != sectionLines[0])
-				polygonPointer1->addVertex(vertexes_[i]);
+                MyPolygonPointer1->addVertex(vertexes_[i]);
 
 			// Иначе добавляем "новые" (newVertexes) вершины и продолжаем обход уже с другого рассекаемого
 			// ребра.
 			else
 			{
-				polygonPointer1->addVertex(newVertexes[0]);
-				polygonPointer1->addVertex(newVertexes[1]);
+                MyPolygonPointer1->addVertex(newVertexes[0]);
+                MyPolygonPointer1->addVertex(newVertexes[1]);
 				for(ushort j=sectionLines[1]; j<vertexes_.size(); ++j)
-					polygonPointer1->addVertex(vertexes_[j]);
+                    MyPolygonPointer1->addVertex(vertexes_[j]);
 				break;
 			}
 		}
 		// Дорисовываем второй полигон по схоже схеме
-		polygonPointer2->addVertex(newVertexes[0]);
+        MyPolygonPointer2->addVertex(newVertexes[0]);
 		for(; i<sectionLines[1]; ++i)
-			polygonPointer2->addVertex(vertexes_[i]);
-		polygonPointer2->addVertex(newVertexes[1]);
+            MyPolygonPointer2->addVertex(vertexes_[i]);
+        MyPolygonPointer2->addVertex(newVertexes[1]);
 	}
 
 	else if(on.size() == 2 && (on[1]-on[0] != (1 || vertexes_.size()-1))) // Если у нас сечение проходит через две существующие вершины
 	{
 
-		polygonPointer1 = new Polygon();
-		polygonPointer2 = new Polygon();
+        MyPolygonPointer1 = new MyPolygon();
+        MyPolygonPointer2 = new MyPolygon();
 		for(i=0; i<vertexes_.size(); ++i) // Проходим по вершинам
 		{
 			// Если текущая вершина не лежит на секущей плоскости,
 			// то просто добавляем вершину в новый полигон
 			if(i != on[0])
-				polygonPointer1->addVertex(vertexes_[i]);
+                MyPolygonPointer1->addVertex(vertexes_[i]);
 
 			// Иначе добавляем "лежащие" вершины и продолжаем обход уже с другой стороны
 			else
 			{
-				polygonPointer1->addVertex(vertexes_[on[0]]);
-				polygonPointer1->addVertex(vertexes_[on[1]]);
+                MyPolygonPointer1->addVertex(vertexes_[on[0]]);
+                MyPolygonPointer1->addVertex(vertexes_[on[1]]);
 				for(ushort j=on[1]+1; j<vertexes_.size(); ++j)
-					polygonPointer1->addVertex(vertexes_[j]);
+                    MyPolygonPointer1->addVertex(vertexes_[j]);
 				break;
 			}
 		}
 		// Дорисовываем второй полигон по схоже схеме
-		polygonPointer2->addVertex(vertexes_[on[0]]);
+        MyPolygonPointer2->addVertex(vertexes_[on[0]]);
 		for(; i<on[1]; ++i)
-			polygonPointer2->addVertex(vertexes_[i]);
-		polygonPointer2->addVertex(vertexes_[on[1]]);
+            MyPolygonPointer2->addVertex(vertexes_[i]);
+        MyPolygonPointer2->addVertex(vertexes_[on[1]]);
 
 	}
 	else if(newVertexes.size() == 1 && on.size() == 1) // Тут смесь первого и второго случаев
 	{
-		polygonPointer1 = new Polygon();
-		polygonPointer2 = new Polygon();
+        MyPolygonPointer1 = new MyPolygon();
+        MyPolygonPointer2 = new MyPolygon();
 		for(i=0; i<vertexes_.size(); ++i) // Проходим по вершинам
 		{
 			if(i != (on[0] && sectionLines[0]))
-				polygonPointer1->addVertex(vertexes_[i]);
+                MyPolygonPointer1->addVertex(vertexes_[i]);
 			else if(i == on[0])
 			{
-				polygonPointer1->addVertex(vertexes_[on[0]]);
-				polygonPointer1->addVertex(newVertexes[0]);
+                MyPolygonPointer1->addVertex(vertexes_[on[0]]);
+                MyPolygonPointer1->addVertex(newVertexes[0]);
 				for(ushort j=sectionLines[0]; j<vertexes_.size(); ++j)
-					polygonPointer1->addVertex(vertexes_[j]);
-				polygonPointer2->addVertex(vertexes_[on[0]]);
+                    MyPolygonPointer1->addVertex(vertexes_[j]);
+                MyPolygonPointer2->addVertex(vertexes_[on[0]]);
 				for(; i<sectionLines[0]; ++i)
-					polygonPointer2->addVertex(vertexes_[i]);
-				polygonPointer2->addVertex(newVertexes[0]);
+                    MyPolygonPointer2->addVertex(vertexes_[i]);
+                MyPolygonPointer2->addVertex(newVertexes[0]);
 				break;
 			}
 			else
 			{
-				polygonPointer1->addVertex(newVertexes[0]);
-				polygonPointer1->addVertex(vertexes_[on[0]]);
+                MyPolygonPointer1->addVertex(newVertexes[0]);
+                MyPolygonPointer1->addVertex(vertexes_[on[0]]);
 				for(ushort j=on[0]+1; j<vertexes_.size(); ++j)
-					polygonPointer1->addVertex(vertexes_[j]);
-				polygonPointer2->addVertex(newVertexes[0]);
+                    MyPolygonPointer1->addVertex(vertexes_[j]);
+                MyPolygonPointer2->addVertex(newVertexes[0]);
 				for(; i<on[0]; ++i)
-					polygonPointer2->addVertex(vertexes_[i]);
-				polygonPointer2->addVertex(vertexes_[on[0]]);
+                    MyPolygonPointer2->addVertex(vertexes_[i]);
+                MyPolygonPointer2->addVertex(vertexes_[on[0]]);
 				break;
 			}
 		}
@@ -248,15 +248,15 @@ sectionFuncReturn Polygon::polygonSection(vector<GLfloat> plane, Polygon*& polyg
 	}
 	else
 	{
-		polygonPointer1 = 0;
-		polygonPointer2 = 0;
+        MyPolygonPointer1 = 0;
+        MyPolygonPointer2 = 0;
 	}
 
-	if(relativeProvisionOfPolygons == false && polygonPointer1 != 0)
+    if(relativeProvisionOfMyPolygons == false && MyPolygonPointer1 != 0)
 	{
-		Polygon* tempPolygonPointer = polygonPointer2;
-		polygonPointer2 = polygonPointer1;
-		polygonPointer1 = tempPolygonPointer;
+        MyPolygon* tempMyPolygonPointer = MyPolygonPointer2;
+        MyPolygonPointer2 = MyPolygonPointer1;
+        MyPolygonPointer1 = tempMyPolygonPointer;
 	}
 	return sectionFuncReturn(newVertexes, more, less, on);
 }

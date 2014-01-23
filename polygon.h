@@ -1,5 +1,5 @@
-#ifndef POLYGON_H
-#define POLYGON_H
+#ifndef MyPolygon_H
+#define MyPolygon_H
 
 #include <QtOpenGL>
 
@@ -12,6 +12,8 @@ using namespace std;
 
 struct point
 {
+    point() {}
+    point(GLfloat x, GLfloat y, GLfloat z) { point_[0] = x; point_[1] = y; point_[2] = z; }
     GLfloat point_[3];
     GLfloat& operator [](unsigned int index);
 };
@@ -28,27 +30,27 @@ struct sectionFuncReturn
 					  vector<ushort> onPoints);
 };
 
-class Polygon
+class MyPolygon
 {
 	private:
         vector<point> vertexes_;
 	public:
 
-        Polygon();
-        Polygon(vector<point> vertexes);
-        Polygon& operator = (Polygon const & polygon);
+        MyPolygon();
+        MyPolygon(vector<point> vertexes);
+        MyPolygon& operator = (MyPolygon const & MyPolygon);
 		void addVertex(const point &vertex); // Добавляем вершину (в конец, а последовательность важна)
-		void drawPolygon(); // Рисуем полигон
+        void drawMyPolygon(); // Рисуем полигон
 
 
 		// Принимаем плоскость и две ссылки на указатели
 		// Если функция создаёт полигоны, то первый обязательно НАД секущей плоскостью (>0)
-		sectionFuncReturn polygonSection(vector<GLfloat> plane, Polygon*& polygonPointer1, Polygon*& polygonPointer2);
+        sectionFuncReturn MyPolygonSection(vector<GLfloat> plane, MyPolygon*& MyPolygonPointer1, MyPolygon*& MyPolygonPointer2);
 
-		//void drawPolygon();
+        //void drawMyPolygon();
 
 };
 
 
 
-#endif // POLYGON_H
+#endif // MyPolygon_H
