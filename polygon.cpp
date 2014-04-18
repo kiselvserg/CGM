@@ -62,7 +62,7 @@ void Polygon::draw()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_POLYGON);
 
-	glColor4f(0.20f, 0.20f, 1.00f, 0.5f);
+	glColor4f(color_[0], color_[1], color_[2], color_[3]);
 	for(ushort i=0; i<vertexes_.size(); ++i)
 		glVertex3f(vertexes_[i][0], vertexes_[i][1], vertexes_[i][2]);
 	glEnd();
@@ -94,9 +94,15 @@ void Polygon::draw()
 
 }
 
+bool Polygon::empty() {
+	return this->vertexes_.size() < 3;
+}
 
 //
-bool Polygon::polygonSection(Plane plane, Polygon* polygonPointer1, Polygon* polygonPointer2, list<Point>* sectionStraightLine)
+bool Polygon::polygonSection(Plane plane,
+							 Polygon* polygonPointer1,
+							 Polygon* polygonPointer2,
+							 list<Point>* sectionStraightLine)
 {
 	ushort temp = 0;
 	schar currentRelativePosition = 0;
@@ -159,9 +165,15 @@ bool Polygon::polygonSection(Plane plane, Polygon* polygonPointer1, Polygon* pol
 
 
 	if(polygonPointer1 != 0 && newPolygonsVertexes[0].size() > 2)
+	{
 		polygonPointer1->addVertexesList(newPolygonsVertexes[0]);
+		polygonPointer1->color_ = this->color_;
+	}
 	if(polygonPointer2 != 0 && newPolygonsVertexes[1].size() > 2)
+	{
 		polygonPointer2->addVertexesList(newPolygonsVertexes[1]);
+		polygonPointer2->color_ = this->color_;
+	}
 	return (newPolygonsVertexes[0].size() > 2) && (newPolygonsVertexes[1].size() > 2);
 
 

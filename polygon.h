@@ -42,11 +42,15 @@ class Polygon
 		inline void addVertex(const Point &vertex); // Добавляем вершину (в конец, а последовательность важна)
 		void addVertexesList(const list<Point> &vertexes);
 		void draw(); // Рисуем полигон
+		bool empty();
 
 
 		// Принимаем плоскость и две ссылки на указатели
 		// Если функция создаёт полигоны, то первый обязательно НАД секущей плоскостью (>0)
-		bool polygonSection(Plane plane, Polygon* polygonPointer1, Polygon* polygonPointer2, list<Point>* sectionStraightLine);
+		bool polygonSection(Plane plane,
+							Polygon* polygonPointer1,
+							Polygon* polygonPointer2,
+							list<Point>* sectionStraightLine);
 
 		//void drawPolygon();
 

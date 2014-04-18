@@ -130,6 +130,15 @@ const float& Plane::getCoefficient(uint index) const
 		return coefficients_[index];
 }
 
+PlanesGroup_xyzPlanesSymmetry::PlanesGroup_xyzPlanesSymmetry(const Plane& plane)
+{
+	planes_.push_back(plane);
+	for(unsigned char i=0; i<3; ++i)
+		if(planes_.front()[i] != 0)
+			planes_.insert(++planes_.begin(), planes_.begin(), planes_.end());
+}
+
+
 bool sortPointsOnStraightLine(list<Point>* points, Point directingVector)
 {
 	if(points->size() < 3)

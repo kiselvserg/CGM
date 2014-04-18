@@ -66,6 +66,15 @@ struct Plane
 	const float& getCoefficient(uint index) const;
 };
 
+struct PlanesGroup_xyzPlanesSymmetry
+{
+	list<Plane> planes_;
+
+	PlanesGroup_xyzPlanesSymmetry(const Plane& plane);
+	Plane& operator [](uint index);
+	const Plane& getPlane(uint index) const;
+};
+
 bool sortPointsOnStraightLine(list<Point>* points, Point directingVector);
 
 schar pointProvisionRelativeToPlane(const Point& point, const Plane& plane);
