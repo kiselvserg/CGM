@@ -20,8 +20,8 @@ public:
 
 	bool polyhedronGroupSection(const Plane& plane,
 								const bool& xyzPlanesSymmetry,
-								Polyhedron*& polyhedron1,
-								Polyhedron*& polyhedron2,
+								Polyhedron* polyhedron1,
+								Polyhedron* polyhedron2,
 								array<float, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
 };
 

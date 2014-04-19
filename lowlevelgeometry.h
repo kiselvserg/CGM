@@ -10,6 +10,8 @@
 
 #define schar signed char
 
+#define COMPARING_ERROR 0.0001
+
 using namespace std;
 
 struct Point

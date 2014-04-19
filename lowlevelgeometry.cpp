@@ -22,12 +22,16 @@ float& Point::operator [](unsigned int index)
 
 bool Point::operator == (Point a)
 {
-	return ((*this)[0]==a[0])*((*this)[1]==a[1])*((*this)[2]==a[2]);
+	return (fabs((*this)[0] - a[0]) < COMPARING_ERROR) &&
+		   (fabs((*this)[1] - a[1]) < COMPARING_ERROR) &&
+		   (fabs((*this)[2] - a[2]) < COMPARING_ERROR);
 }
 
 bool Point::operator == (float a)
 {
-	return ((*this)[0]==a)*((*this)[1]==a)*((*this)[2]==a);
+	return (fabs((*this)[0] - a) < COMPARING_ERROR) &&
+		   (fabs((*this)[1] - a) < COMPARING_ERROR) &&
+		   (fabs((*this)[2] - a) < COMPARING_ERROR);
 }
 
 Point Point::operator + (Point a)
@@ -132,10 +136,20 @@ const float& Plane::getCoefficient(uint index) const
 
 PlanesGroup_xyzPlanesSymmetry::PlanesGroup_xyzPlanesSymmetry(const Plane& plane)
 {
+	unsigned char counter = 0, temp = 0;
 	planes_.push_back(plane);
 	for(unsigned char i=0; i<3; ++i)
 		if(planes_.front()[i] != 0)
 			planes_.insert(++planes_.begin(), planes_.begin(), planes_.end());
+
+	for(unsigned char i=0, k=1; i<3; ++i)
+		if(planes_.front()[i] != 0)
+		{
+			temp = planes_.size()/pow(2, k);
+			for(auto j = planes_.begin(); j != planes_.end(); ++j, ++counter)
+				(*j)[i] *= 1 + (-2)*(bool)((counter/temp)%2 != 0);
+			++k; counter = 0;
+		}
 }
 
 
@@ -218,6 +232,7 @@ bool planeCrossingByPiece(Plane plane, Piece piece, Point* crossingPoint)
 	return false;
 }
 
+// Не дописано
 bool planeCrossingByPlane(Plane plane1, Plane plane2, StraightLine* crossingStraightLine)
 {
 	Point directingVector(plane1[1]*plane2[2] - plane1[2]*plane2[1],

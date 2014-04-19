@@ -100,15 +100,18 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 bool Polyhedron::polyhedronGroupSection(const Plane& plane,
 							const bool& xyzPlanesSymmetry,
 							//const bool& someVectorSymmetry,
-							Polyhedron*& polyhedron1,
-							Polyhedron*& polyhedron2,
+							Polyhedron* polyhedron1,
+							Polyhedron* polyhedron2,
 							array<float, 4> color)
 {
 	bool temp = false;
 	temp = temp || this->polyhedronSection(plane, polyhedron1, polyhedron2, color);
+
 	if(xyzPlanesSymmetry == true)
 	{
-		polyhedron2->polyhedronSection(plane, polyhedron1, polyhedron2, color);
+		PlanesGroup_xyzPlanesSymmetry planesXYZ(plane);
+		for(auto i = ++planesXYZ.planes_.begin(); i != planesXYZ.planes_.end(); ++i)
+			polyhedron2->polyhedronSection((*i), polyhedron1, polyhedron2, color);
 	}
 
 }
