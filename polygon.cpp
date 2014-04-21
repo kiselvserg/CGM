@@ -106,9 +106,14 @@ bool Polygon::polygonSection(Plane plane,
 {
 	ushort temp = 0;
 	schar currentRelativePosition = 0;
+	bool lineOnPlane = false;
 	vector<schar> pointsProvisionVector, pointsAccessoryVector;
 	pointsProvisionVector.resize(vertexes_.size(), 0);
 	pointsAccessoryVector.resize(vertexes_.size(), 0);
+	list<Point> tempSectionLine;
+	if(vertexes_.size() == 0)
+		temp = 0;
+
 
 	list<Point> newPolygonsVertexes[2];
 
@@ -143,27 +148,42 @@ bool Polygon::polygonSection(Plane plane,
 								 &bufPoint);
 			newPolygonsVertexes[0].push_back(bufPoint);
 			newPolygonsVertexes[1].push_back(bufPoint);
-			if(sectionStraightLine != 0)
-				sectionStraightLine->push_back(bufPoint);
+			tempSectionLine.push_back(bufPoint);
+			//bufPoint = 0;
 
 		}
-		if((pointsProvisionVector[temp] == 0) && (pointsAccessoryVector[temp] != pointsAccessoryVector[i]))
+		else if((pointsProvisionVector[temp] == 0) && (pointsAccessoryVector[temp] != pointsAccessoryVector[i]))
 		{
-			newPolygonsVertexes[1 - (pointsAccessoryVector[temp]*(-1) < 0)].push_back(vertexes_[temp]);
-			if(sectionStraightLine != 0)
-				sectionStraightLine->push_back(vertexes_[temp]);
+			newPolygonsVertexes[1 - (pointsAccessoryVector[i] > 0)].push_back(vertexes_[temp]);
+			tempSectionLine.push_back(vertexes_[temp]);
+
 		}
+		else if(pointsProvisionVector[i] == 0 && pointsProvisionVector[temp] == 0)
+		{
+			lineOnPlane = true;
+			tempSectionLine.push_back(vertexes_[temp]);
 
-		newPolygonsVertexes[1 - (pointsAccessoryVector[i] < 0)].push_back(vertexes_[i]);
+		}
+		else
+			if(lineOnPlane == true &&  pointsProvisionVector[temp] == 0)
+			{
+				tempSectionLine.push_back(vertexes_[temp]);
+				lineOnPlane = false;
+			}
+
+		newPolygonsVertexes[1 - (pointsAccessoryVector[i] > 0)].push_back(vertexes_[i]);
+
+		//newPolygonsVertexes[1 - (pointsAccessoryVector[i] < 0)].push_back(vertexes_[i]);
 	}
-	if( sectionStraightLine != 0 &&
-	   (newPolygonsVertexes[0].size() > 2) &&
-	   (newPolygonsVertexes[1].size() > 2) )
-		sortPointsOnStraightLine(sectionStraightLine,
-								 sectionStraightLine->front()-(*(++(sectionStraightLine->begin()))));
+
+	sortPointsOnStraightLine(&tempSectionLine, tempSectionLine.front()-(*(++(tempSectionLine.begin()))));
 
 
 
+	if(tempSectionLine.size() > 2)
+		temp = 0;
+	if(sectionStraightLine != 0)
+		(*sectionStraightLine) = tempSectionLine;
 	if(polygonPointer1 != 0 && newPolygonsVertexes[0].size() > 2)
 	{
 		polygonPointer1->addVertexesList(newPolygonsVertexes[0]);
@@ -174,6 +194,7 @@ bool Polygon::polygonSection(Plane plane,
 		polygonPointer2->addVertexesList(newPolygonsVertexes[1]);
 		polygonPointer2->color_ = this->color_;
 	}
+
 	return (newPolygonsVertexes[0].size() > 2) && (newPolygonsVertexes[1].size() > 2);
 
 

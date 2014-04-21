@@ -173,10 +173,10 @@ bool sortPointsOnStraightLine(list<Point>* points, Point directingVector)
 schar pointProvisionRelativeToPlane(const Point& point, const Plane& plane)
 {
 	return ((plane.getCoefficient(0)*point.getComponent(0) + plane.getCoefficient(1)*point.getComponent(1) +
-				plane.getCoefficient(2)*point.getComponent(2) + plane.getCoefficient(3)) > 0)
+				plane.getCoefficient(2)*point.getComponent(2) + plane.getCoefficient(3)) > COMPARING_ERROR)
 			-
 		   ((plane.getCoefficient(0)*point.getComponent(0) + plane.getCoefficient(1)*point.getComponent(1) +
-				plane.getCoefficient(2)*point.getComponent(2) + plane.getCoefficient(3)) < 0);
+				plane.getCoefficient(2)*point.getComponent(2) + plane.getCoefficient(3)) < -COMPARING_ERROR);
 }
 
 
