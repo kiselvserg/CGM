@@ -14,19 +14,6 @@
 using namespace std;
 
 
-
-struct sectionFuncReturn
-{
-	vector<Point> newPoints_; // Новые вершины
-	vector<ushort>  morePoints_; // При подстановке в уравнение плоскости этих вершин > 0
-	vector<ushort>  lessPoints_; // < 0
-	vector<ushort>  onPoints_; // == 0
-	sectionFuncReturn(vector<Point> newPoints,
-					  vector<ushort> morePoints,
-					  vector<ushort> lessPoints,
-					  vector<ushort> onPoints);
-};
-
 class Polygon
 {
 	private:

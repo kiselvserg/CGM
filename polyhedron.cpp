@@ -38,17 +38,9 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 	list<list<Point>> sectionLines;
 
 	// Для дебага
-	list<ushort> debugCounter;
-	ushort tempSize = polygons_.size();
 
 	for(ushort i=0; i < polygons_.size(); ++i)
 	{
-
-		if(i == 7 && polygons_.size() == 8)
-		{
-			tempSize = 44;
-			true;
-		}
 		if(polygons_[i].polygonSection(plane, &tempPolygon1, &tempPolygon2, &tempSectionLine))
 		{
 
@@ -73,9 +65,6 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 
 	// Костыль! Такой большой и деревянный. Нет, на самом деле это можно оставить, но так не хочется.
 
-	if(polygons_.size() == 44)
-		tempSize = 44;
-	int k = 0;
 	while((sectionLines.size() > 2) && !(sectionLines.front().back() == sectionLines.front().front()) )
 	{
 
@@ -92,37 +81,7 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 				sectionLines.erase(i);
 				break;
 			}
-		++k;
-
-
-		if(k > 100)
-		{
-
-			ofstream out;
-			out.open("file.txt");
-			for(auto j = debugCounter.begin(); j != debugCounter.end(); ++j )
-			{
-				out << (*j) << endl;
-				//polygons_[*j].draw();
-			}
-			out.close();
-			break;
-		}
-
-
 	}
-
-	/*
-	ofstream out;
-	out.open("file.txt");
-	for(auto j = debugCounter.begin(); j != debugCounter.end(); ++j )
-	{
-		out << (*j) << endl;
-		polygons_[*j].draw();
-	}
-	out.close();
-	*/
-
 
 	if(sectionLines.size() > 0 && sectionLines.front().size() > 2)
 	{
@@ -154,13 +113,11 @@ bool Polyhedron::polyhedronGroupSection(const Plane& plane,
 	bool temp = false;
 	temp = temp || this->polyhedronSection(plane, polyhedron1, polyhedron2, color);
 
-	// Для дебага
-	int count = 0;
 
 	if(xyzPlanesSymmetry == true)
 	{
 		PlanesGroup_xyzPlanesSymmetry planesXYZ(plane);
-		for(auto i = ++planesXYZ.planes_.begin(); i != planesXYZ.planes_.end(); ++i, ++count)
+		for(auto i = ++planesXYZ.planes_.begin(); i != planesXYZ.planes_.end(); ++i)
 			polyhedron1->polyhedronSection((*i), polyhedron1, polyhedron2, color);
 	}
 
