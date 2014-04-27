@@ -1,16 +1,5 @@
 #include "polygon.h"
 
-sectionFuncReturn::sectionFuncReturn(vector<Point> newPoints,
-									 vector<ushort> morePoints,
-									 vector<ushort> lessPoints,
-									 vector<ushort> onPoints)
-{
-	newPoints_ = newPoints;
-	morePoints_ = morePoints;
-	lessPoints_ = lessPoints;
-	onPoints_ = onPoints;
-}
-
 
 Polygon::Polygon(array<float, 4> color)
 {

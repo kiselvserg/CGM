@@ -46,8 +46,6 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 
 			polygonsList1.push_back(tempPolygon1);
 			polygonsList2.push_back(tempPolygon2);
-
-			debugCounter.push_back(i);
 		}
 		else
 		{
@@ -71,15 +69,16 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 		for(auto i = ++sectionLines.begin(); i != sectionLines.end(); ++i)
 			if(i->front() == sectionLines.front().back())
 			{
-			if(sectionLines.front().front() == i->back())
-break;	sectionLines.front().push_back(i->back());
+				if(sectionLines.front().front() == i->back())
+					break;
+				sectionLines.front().push_back(i->back());
 				sectionLines.erase(i);
 				break;
 			}
 			else if(i->back() == sectionLines.front().back())
 			{
-if(sectionLines.front().front() == i->front())
-break;
+				if(sectionLines.front().front() == i->front())
+					break;
 				sectionLines.front().push_back(i->front());
 				sectionLines.erase(i);
 				break;
