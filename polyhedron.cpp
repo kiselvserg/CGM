@@ -62,6 +62,20 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 	}
 
 	// Костыль! Такой большой и деревянный. Нет, на самом деле это можно оставить, но так не хочется.
+	// Костыль в костыле. Деревянная нога капитана Флинта (не помню была ли у него деревянная нога)
+	// Поиск и удаление повторений.
+
+	if(sectionLines.size() > 2)
+		for(auto i = sectionLines.begin(), j = i; i != --sectionLines.end(); ++i, j = i)
+			for(++j; j != sectionLines.end(); )
+			{
+				if((i->front() == j->front() && i->back() == j->back()) ||
+				   (i->front() == j->back() && i->back() == j->front())	)
+					j = sectionLines.erase(j);
+				else
+					++j;
+			}
+
 
 	for(bool endThis = false; sectionLines.size() > 2 && endThis != true; )
 	{
@@ -69,22 +83,26 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 		for(auto i = ++sectionLines.begin(); i != sectionLines.end(); ++i)
 			if(i->front() == sectionLines.front().back())
 			{
+				/*
 				if(sectionLines.front().front() == i->back())
 				{
 					endThis = true;
 					break;
 				}
+				*/
 				sectionLines.front().push_back(i->back());
 				sectionLines.erase(i);
 				break;
 			}
 			else if(i->back() == sectionLines.front().back())
 			{
+				/*
 				if(sectionLines.front().front() == i->front())
 				{
 					endThis = true;
 					break;
 				}
+				*/
 				sectionLines.front().push_back(i->front());
 				sectionLines.erase(i);
 				break;
