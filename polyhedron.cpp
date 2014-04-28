@@ -63,14 +63,17 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 
 	// Костыль! Такой большой и деревянный. Нет, на самом деле это можно оставить, но так не хочется.
 
-	while(sectionLines.size() > 2 )
+	for(bool endThis = false; sectionLines.size() > 2 && endThis != true; )
 	{
 
 		for(auto i = ++sectionLines.begin(); i != sectionLines.end(); ++i)
 			if(i->front() == sectionLines.front().back())
 			{
 				if(sectionLines.front().front() == i->back())
+				{
+					endThis = true;
 					break;
+				}
 				sectionLines.front().push_back(i->back());
 				sectionLines.erase(i);
 				break;
@@ -78,7 +81,10 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 			else if(i->back() == sectionLines.front().back())
 			{
 				if(sectionLines.front().front() == i->front())
+				{
+					endThis = true;
 					break;
+				}
 				sectionLines.front().push_back(i->front());
 				sectionLines.erase(i);
 				break;
