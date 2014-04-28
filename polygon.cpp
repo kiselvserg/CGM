@@ -155,6 +155,11 @@ bool Polygon::polygonSection(Plane plane,
 
 		newPolygonsVertexes[1 - (pointsAccessoryVector[i] > 0)].push_back(vertexes_[i]);
 	}
+	if(lineOnPlane == true &&  pointsProvisionVector.back() == 0)
+	{
+		tempSectionLine.push_back(vertexes_.back());
+		lineOnPlane = false;
+	}
 
 	sortPointsOnStraightLine(&tempSectionLine, tempSectionLine.front()-(*(++(tempSectionLine.begin()))));
 
