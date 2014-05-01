@@ -2,9 +2,6 @@
 #include <math.h>
 
 #include "Scene.h"
-#include "lowlevelgeometry.h"
-#include "polygon.h"
-#include "polyhedron.h"
 
 const static double pi=3.141593, k=pi/180;
 
@@ -14,8 +11,8 @@ GLubyte IndexArray[20][3];
 
 Scene::Scene(QWidget* parent) : QGLWidget(parent)
 {
-    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.1;
-    colors << QColor("#FFFF00") << QColor("#FFCCDE") << QColor("#3CCD5D");
+    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.5;
+    colors << QColor("#FFFF00") << QColor("#FFCCDE") << QColor("#808080") << QColor("#1853C3");
 }
 
 void Scene::initializeGL()
@@ -23,9 +20,6 @@ void Scene::initializeGL()
     qglClearColor(this->palette().color(QPalette::Window));
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_SMOOTH);
-
-    //glEnable(GL_CULL_FACE);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     getVertexArray();
     getColorArray();
@@ -78,24 +72,9 @@ void Scene::paintGL()
     vertexes[2][0] = 0.0f;
     vertexes[2][1] = 0.0f;
     vertexes[2][2] = 1.0f;
-    //a = vertexes[0][2];
-    //b =
-
-    CPolygon temp(vertexes);
-    //temp.draw();
-
-    vertexes[0][0] = -1.0f;
-
-    CPolygon temp2(vertexes);
-    //temp2.draw();
 
     vertexes[1][0] = 1.0f;
     vertexes[1][1] = 0.0f;
-
-
-
-
-
 
     vector<Point> tempVector1;
 
@@ -198,92 +177,44 @@ void Scene::paintGL()
     //polyhedron.draw();
 
     // Создаём плоскость
-    //double alpha = 1.9;
-    //double beta = 1.4;
-    Plane plane0(1, 1, 1, 3/alpha);
-//    //Plane plane1(-1, 1, 1, 3/alpha);
+    double alpha_ = 2.5;
+    double beta_ = 1.85;
+    double gamma_ = 4.34;
 
-//    Plane plane10(0, 1, 1, 2/beta);
-//    Plane plane11(1, 0, 1, 2/beta);
-//    Plane plane12(1, 1, 0, 2/beta);
+    // Плоскость х+у+z=alpha
+    Plane plane0(1, 1, 1, alpha_);
 
-//    Plane plane20(1, 0, 0, 1);
-//    Plane plane21(0, 1, 0, 1);
-//    Plane plane22(0, 0, 1, 1);
+    // Плоскости y+z=beta, х+z=beta, х+у=beta
+    Plane plane10(0, 1, 1, beta_);
+    Plane plane11(1, 0, 1, beta_);
+    Plane plane12(1, 1, 0, beta_);
 
-//    Plane plane30(3, 1, 1, (3+2*alpha)/alpha);
-//    Plane plane31(1, 3, 1, (3+2*alpha)/alpha);
-//    Plane plane32(1, 1, 3, (3+2*alpha)/alpha);
-    Plane plane10(1,1,0, 2/beta);
-    Plane plane11(1,0,1, 2/beta);
-    Plane plane12(0,1,1, 2/beta);
+    // Плоскости x=1.1, y=1.1, z=1.1
+    Plane plane20(1, 0, 0, 1);
+    Plane plane21(0, 1, 0, 1);
+    Plane plane22(0, 0, 1, 1);
 
-    Plane plane20(1, 1, 3, 11/gamma);
-    Plane plane21(1, 3, 1, 11/gamma);
-    Plane plane22(3, 1, 1, 11/gamma);
-    // Создаём полигедроны (пока пустые)
-    //Polyhedron* polyhedron1 = new Polyhedron;
-    //Polyhedron* polyhedron2 = new Polyhedron;
-
-    /* Полигедрон куб сечём плоскостью, результат запихиваем во второй и третий аргументы
-    (указатели на полигедроны). Если четвёртый коэффициент плоскости положителен, то
-    при сечении полигедрон, который с той же стороны секущей плоскости, что и тчк (0, 0, 0), записывается
-    во второй (!!!) полигедрон (третий аргумент функции). Перед добавление полигонов в
-    полигедроны по указателям, полигедроны очищаются.
-    Четвёртый аргумент - цвет сечения.
-    */
-
-    // Рассекли раз. Записываем результат в самого "polyhedron". "polyhedron2" можно заменить на
-    // 0, если не нужен
-    polyhedron.polyhedronGroupSection(plane0, true, 0, &polyhedron, colors[0]);
-
-    polyhedron.polyhedronGroupSection(plane10, true, 0, &polyhedron, colors[1]);
-    polyhedron.polyhedronGroupSection(plane11, true, 0, &polyhedron, colors[1]);
-    polyhedron.polyhedronGroupSection(plane12, true, 0, &polyhedron, colors[1]);
-
-    polyhedron.polyhedronGroupSection(plane20, true, 0, &polyhedron, colors[2]);
-    polyhedron.polyhedronGroupSection(plane21, true, 0, &polyhedron, colors[2]);
-    polyhedron.polyhedronGroupSection(plane22, true, 0, &polyhedron, colors[2]);
-
-//    polyhedron.polyhedronGroupSection(plane20, true, 0, &polyhedron, {0.23f, 0.8f, 0.36f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane21, true, 0, &polyhedron, {0.23f, 0.8f, 0.36f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane22, true, 0, &polyhedron, {0.23f, 0.8f, 0.36f, 0.5f});
-
-    //#3CCD5D
-    //polyhedron.polyhedronGroupSection(plane2, true, 0, &polyhedron, {0.5f, 0.5f, 0.5f, 0.5f});
-    //polyhedron2->draw();
-    //polyhedron.clear(); polyhedron1->clear();
-
-
-    //polyhedron.draw();
-    //polyhedron2->draw();
+    // Плоскости 3х+у+z=gamma, х+3у+z=gamma, х+у+3z=gamma
+    Plane plane30(3, 1, 1, gamma_);
+    Plane plane31(1, 3, 1, gamma_);
+    Plane plane32(1, 1, 3, gamma_);
+    polyhedron.polyhedronGroupSection(plane0, true, &polyhedron, 0, getGLColor(colors[0]));
 
     // Сечём остатки другой плоскостью
 
-//    polyhedron.polyhedronGroupSection(plane10, true, 0, &polyhedron, {1.0f, 0.8f, 0.87f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane11, true, 0, &polyhedron, {1.0f, 0.8f, 0.87f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane12, true ,0, &polyhedron, {1.0f, 0.8f, 0.87f, 0.5f});
+    polyhedron.polyhedronGroupSection(plane10, true, &polyhedron, 0, getGLColor(colors[1]));
+    polyhedron.polyhedronGroupSection(plane11, true, &polyhedron, 0, getGLColor(colors[1]));
+    polyhedron.polyhedronGroupSection(plane12, true, &polyhedron, 0, getGLColor(colors[1]));
 
-//    polyhedron.polyhedronGroupSection(plane20, true, 0, &polyhedron, {0.5f, 0.5f, 0.5f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane21, true, 0, &polyhedron, {0.5f, 0.5f, 0.5f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane22, true, 0, &polyhedron, {0.5f, 0.5f, 0.5f, 0.5f});
+    polyhedron.polyhedronGroupSection(plane20, true, &polyhedron, 0, getGLColor(colors[2]));
+    polyhedron.polyhedronGroupSection(plane21, true, &polyhedron, 0, getGLColor(colors[2]));
+    polyhedron.polyhedronGroupSection(plane22, true, &polyhedron, 0, getGLColor(colors[2]));
 
-//    polyhedron.polyhedronGroupSection(plane30, true, 0, &polyhedron, {0.2f, 0.2f, 1.0f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane31, true, 0, &polyhedron, {0.2f, 0.2f, 1.0f, 0.5f});
-//    polyhedron.polyhedronGroupSection(plane32, true, 0, &polyhedron, {0.2f, 0.2f, 1.0f, 0.5f});
-
-    // Рисуем
-
-    //polyhedron1->draw();
-
-    //PlanesGroup_xyzPlanesSymmetry planesGroup(plane0);
+    polyhedron.polyhedronGroupSection(plane30, true, &polyhedron, 0, getGLColor(colors[3]));
+    polyhedron.polyhedronGroupSection(plane31, true, &polyhedron, 0, getGLColor(colors[3]));
+    polyhedron.polyhedronGroupSection(plane32, true, &polyhedron, 0, getGLColor(colors[3]));
 
     polyhedron.draw();
-    //temp.draw();
-    //drawFigure();
-
-
-
 }
 
 void Scene::setAlpha(double _alpha)
@@ -616,11 +547,10 @@ void Scene::drawFigure()
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawElements(GL_TRIANGLES, 20, GL_UNSIGNED_BYTE, IndexArray);
+}
 
-
-    //glDisable(GL_CLIP_PLANE0);
-    //glClipPlane(GL_CLIP_PLANE0, ep);
-    //glEnable(GL_CLIP_PLANE0);
-    //glDrawElements(GL_POLYGON, 60, GL_UNSIGNED_BYTE, IndexArray);
-    //glDrawElementsBaseVertex(GL_TRIANGLES, 60, GL_UNSIGNED_BYTE, IndexArray, 2);
+array<double, 4> Scene::getGLColor(const QColor &color_)
+{
+    //array<double, 4> color = {color_.red()/255.0, color_.green()/255.0, color_.blue()/255.0, 0.5f };
+    return array<double, 4>({color_.red()/255.0, color_.green()/255.0, color_.blue()/255.0, 0.5f });
 }

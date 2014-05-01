@@ -5,6 +5,9 @@
 #include <QtOpenGL>
 #include <QTimer>
 #include <QVector>
+#include "lowlevelgeometry.h"
+#include "polygon.h"
+#include "polyhedron.h"
 
 class Scene : public QGLWidget
 {
@@ -15,6 +18,8 @@ public:
     void setAlpha(double);
     void setBeta(double);
     void setGamma(double);
+    void clipping(QVector<Plane> planes, QVector<QColor> colors);
+    void clipping(Plane plane, QColor color);
 
 private:
     GLfloat xRot;
@@ -46,7 +51,7 @@ private:
     void getColorArray();
     void getIndexArray();
     void drawFigure();
-    //void drawCrystall();
+    array<double, 4> getGLColor(const QColor&);
 
  protected:
     void initializeGL();

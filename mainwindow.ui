@@ -75,7 +75,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -119,6 +119,17 @@
           <property name="text">
            <string>RadioButton</string>
           </property>
+         </widget>
+         <widget class="QWidget" name="verticalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>120</y>
+            <width>160</width>
+            <height>80</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3"/>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_2">
@@ -168,7 +179,7 @@
             <double>0.010000000000000</double>
            </property>
            <property name="value">
-            <double>0.240000000000000</double>
+            <double>1.900000000000000</double>
            </property>
           </widget>
          </item>

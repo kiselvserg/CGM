@@ -12,6 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
     scene->setBeta(ui->betaSpinBox->value());
     scene->setGamma(ui->gammaSpinBox->value());
     ui->tabWidget->setStyleSheet(tr("background-color: ") + this->palette().color(QPalette::Window).name());
+
+    //colorSelectButton = new QUColorSelectButton("", this);
+    //ui->verticalLayout_3->addWidget(colorSelectButton);
+    //colorSelectButton->setColor(QColor("#13456f"));
+
     scene->updateGL();
 }
 

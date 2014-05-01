@@ -1,19 +1,19 @@
 #include "polygon.h"
 
 
-Polygon::Polygon(array<float, 4> color)
+CPolygon::CPolygon(array<double, 4> color)
 {
 	color_ = color;
 }
 
-Polygon::Polygon(vector<Point> vertexes, array<float, 4> color)
+CPolygon::CPolygon(vector<Point> vertexes, array<double, 4> color)
 {
 	if(vertexes.size() > 2)
 		vertexes_ = vertexes;
 	color_ = color;
 }
 
-Polygon::Polygon(list<Point> vertexes, array<float, 4> color)
+CPolygon::CPolygon(list<Point> vertexes, array<double, 4> color)
 {
 	if(vertexes.size() > 2)
 		for(auto i = vertexes.begin(); i != vertexes.end(); ++i )
@@ -21,29 +21,29 @@ Polygon::Polygon(list<Point> vertexes, array<float, 4> color)
 	color_ = color;
 }
 
-Polygon& Polygon::operator = (Polygon const & polygon)
+CPolygon& CPolygon::operator = (CPolygon const & polygon)
 {
 	vertexes_ = polygon.vertexes_;
 	return *this;
 }
 
-void Polygon::clear()
+void CPolygon::clear()
 {
 	vertexes_.clear();
 }
 
-inline void Polygon::addVertex(const Point &vertex)
+inline void CPolygon::addVertex(const Point &vertex)
 {
 	vertexes_.push_back(vertex);
 }
 
-void Polygon::addVertexesList(const list<Point> &vertexes)
+void CPolygon::addVertexesList(const list<Point> &vertexes)
 {
 	for(list<Point>::const_iterator i = vertexes.begin() ; i != vertexes.end(); ++i)
 		vertexes_.push_back(*i);
 }
 
-void Polygon::draw()
+void CPolygon::draw()
 {
 
 	//glPolygonMode();
@@ -83,14 +83,14 @@ void Polygon::draw()
 
 }
 
-bool Polygon::empty() {
+bool CPolygon::empty() {
 	return this->vertexes_.size() < 3;
 }
 
 //
-bool Polygon::polygonSection(Plane plane,
-							 Polygon* polygonPointer1,
-							 Polygon* polygonPointer2,
+bool CPolygon::polygonSection(Plane plane,
+                             CPolygon* polygonPointer1,
+                             CPolygon* polygonPointer2,
 							 list<Point>* sectionStraightLine)
 {
 	ushort temp = 0;

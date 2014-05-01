@@ -8,14 +8,14 @@ Point::Point()
 }
 
 
-Point::Point(const float& firstComponent, const float&  secondComponent, const float&  thirdComponent)
+Point::Point(const double& firstComponent, const double&  secondComponent, const double&  thirdComponent)
 {
 	point_[0] = firstComponent;
 	point_[1] = secondComponent;
 	point_[2] = thirdComponent;
 }
 
-float& Point::operator [](unsigned int index)
+double& Point::operator [](unsigned int index)
 {
 		return point_[index];
 }
@@ -27,7 +27,7 @@ bool Point::operator == (Point a)
 		   (fabs((*this)[2] - a[2]) < COMPARING_ERROR);
 }
 
-bool Point::operator == (float a)
+bool Point::operator == (double a)
 {
 	return (fabs((*this)[0] - a) < COMPARING_ERROR) &&
 		   (fabs((*this)[1] - a) < COMPARING_ERROR) &&
@@ -44,9 +44,9 @@ Point Point::operator - (Point a)
 	return Point((*this)[0]-a[0], (*this)[1]-a[1], (*this)[2]-a[2]);
 }
 
-float Point::operator / (Point a)
+double Point::operator / (Point a)
 {
-	float temp1 = 0, temp2 = 0, temp3 = 0;
+    double temp1 = 0, temp2 = 0, temp3 = 0;
 	if( (((a[0] != 0) + ((*this)[0] != 0)) != 1) ||
 		(((a[1] != 0) + ((*this)[1] != 0)) != 1) ||
 		(((a[2] != 0) + ((*this)[2] != 0)) != 1) )
@@ -72,7 +72,7 @@ Point& Point::operator += (Point a)
 
 }
 
-const float& Point::getComponent(uint index) const
+const double& Point::getComponent(uint index) const
 {
 	return point_[index];
 }
@@ -116,7 +116,7 @@ Point& Piece::getSecondPoint()
 	return points_[1];
 }
 
-Plane::Plane(float firstCoefficient, float secondCoefficient, float thirdCoefficient, float fourthCoefficient)
+Plane::Plane(double firstCoefficient, double secondCoefficient, double thirdCoefficient, double fourthCoefficient)
 {
 	coefficients_[0] = firstCoefficient;
 	coefficients_[1] = secondCoefficient;
@@ -124,12 +124,12 @@ Plane::Plane(float firstCoefficient, float secondCoefficient, float thirdCoeffic
 	coefficients_[3] = fourthCoefficient;
 }
 
-float& Plane::operator [](uint index)
+double& Plane::operator [](uint index)
 {
 		return coefficients_[index];
 }
 
-const float& Plane::getCoefficient(uint index) const
+const double& Plane::getCoefficient(uint index) const
 {
 		return coefficients_[index];
 }
@@ -157,7 +157,7 @@ bool sortPointsOnStraightLine(list<Point>* points, Point directingVector)
 {
 	if(points->size() < 3)
 		return true;
-	float alpha = 0;
+    double alpha = 0;
 	bool check = true;
 	list<Point>::iterator i=(++(++(points->begin())));
 
@@ -183,7 +183,7 @@ schar pointProvisionRelativeToPlane(const Point& point, const Plane& plane)
 bool planeCrossingByStraightLine(Plane plane, StraightLine line, Point* crossingPoint)
 {
 	Point bufPoint;
-	float numerator = 0, denominator = 0, alpha = 0;
+    double numerator = 0, denominator = 0, alpha = 0;
 	bufPoint[0] = line[0][0] - line[1][0];
 	bufPoint[1] = line[0][1] - line[1][1];
 	bufPoint[2] = line[0][2] - line[1][2];
