@@ -1,15 +1,12 @@
 #include "mygroupbox.h"
 
 MyGroupBox::MyGroupBox(const QVector<QString>& labels, const QString& title, int type, QWidget *parent) :
-    QGroupBox(title, parent), labels_(labels), type_(type), size(0)
+    QGroupBox(title, parent), labels_(labels), type_(type), size(labels.size())
 {
     layout = new QFormLayout();
-    radio.resize(labels.size()+1);
-    colorSelections.resize(labels.size()+1);
-    //color.resize(labels.size()+1);
-    size = labels.size();
-    qDebug() << "size:" << size;
-    for(int i = 0; i < labels.size(); i++)
+    radio.resize(size+1);
+    colorSelections.resize(size+1);
+    for(int i = 0; i < size; i++)
     {
         radio[i] = new QRadioButton(labels[i], this);
         colorSelections[i] = new QUColorSelectButton("", this);
@@ -19,19 +16,6 @@ MyGroupBox::MyGroupBox(const QVector<QString>& labels, const QString& title, int
     }
     this->setLayout(layout);
 }
-
-//bool MyGroupBox::selected(radioValue* v)
-//{
-
-//    for(int i = 0; i < labels_.size(); i++)
-//        if(radio[i]->isChecked())
-//        {
-//            v->text = radio[i]->text();
-//            v->color = colorSelections[i]->color();
-//            return true;
-//        }
-//    return false;
-//}
 
 void MyGroupBox::unSelect()
 {
