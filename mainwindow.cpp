@@ -66,6 +66,8 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
         ui->alphaSpinBox->setEnabled(1);
         ui->betaSpinBox->setEnabled(0);
         ui->gammaSpinBox->setEnabled(0);
+        betaBox->unSelect();
+        gammaBox->unSelect();
         equals = 3.0 / ui->alphaSpinBox->value();
         //*equals = 3.0/(*equals);
         break;
@@ -74,6 +76,8 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
         ui->betaSpinBox->setEnabled(1);
         ui->gammaSpinBox->setEnabled(0);
         equals = 2.0/ui->betaSpinBox->value();
+        alphaBox->unSelect();
+        gammaBox->unSelect();
         //*equals = 2.0/(*equals);
         break;
     case 3:
@@ -81,6 +85,8 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
         ui->betaSpinBox->setEnabled(0);
         ui->gammaSpinBox->setEnabled(1);
         equals = 11.0/ui->gammaSpinBox->value();
+        betaBox->unSelect();
+        alphaBox->unSelect();
         //equals = &gamma;
         //*equals = 11.0/(*equals);
         break;

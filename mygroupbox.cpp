@@ -1,12 +1,14 @@
 #include "mygroupbox.h"
 
 MyGroupBox::MyGroupBox(const QVector<QString>& labels, const QString& title, int type, QWidget *parent) :
-    QGroupBox(title, parent), labels_(labels), type_(type)
+    QGroupBox(title, parent), labels_(labels), type_(type), size(0)
 {
     layout = new QFormLayout();
     radio.resize(labels.size()+1);
     colorSelections.resize(labels.size()+1);
     //color.resize(labels.size()+1);
+    size = labels.size();
+    qDebug() << "size:" << size;
     for(int i = 0; i < labels.size(); i++)
     {
         radio[i] = new QRadioButton(labels[i], this);
@@ -18,22 +20,32 @@ MyGroupBox::MyGroupBox(const QVector<QString>& labels, const QString& title, int
     this->setLayout(layout);
 }
 
-bool MyGroupBox::selected(radioValue* v)
-{
+//bool MyGroupBox::selected(radioValue* v)
+//{
 
-    for(int i = 0; i < labels_.size(); i++)
-        if(radio[i]->isChecked())
-        {
-            v->text = radio[i]->text();
-            v->color = colorSelections[i]->color();
-            return true;
-        }
-    return false;
+//    for(int i = 0; i < labels_.size(); i++)
+//        if(radio[i]->isChecked())
+//        {
+//            v->text = radio[i]->text();
+//            v->color = colorSelections[i]->color();
+//            return true;
+//        }
+//    return false;
+//}
+
+void MyGroupBox::unSelect()
+{
+    for(int i = 0; i < size; i++)
+    {
+        radio[i]->setAutoExclusive(false);
+        radio[i]->setChecked(false);
+        radio[i]->setAutoExclusive(true);
+    }
 }
 
 void MyGroupBox::radioSelected()
 {
-    for(int i = 0; i < labels_.size(); i++)
+    for(int i = 0; i <size; i++)
         if(radio[i]->isChecked())
         {
             emit radioButtonSelected(radio[i]->text(), colorSelections[i]->color(), type_);

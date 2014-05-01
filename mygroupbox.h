@@ -19,7 +19,8 @@ class MyGroupBox : public QGroupBox
     Q_OBJECT
 public:
     MyGroupBox(const QVector<QString> &labels, const QString &title, int type, QWidget *parent = 0);
-    bool selected(radioValue *);
+//    bool selected(radioValue *);
+    void unSelect();
 
 Q_SIGNALS:
     void radioButtonSelected(QString, QColor, int);
@@ -34,6 +35,7 @@ private:
     QVector<QString> labels_;
     QFormLayout* layout;
     int type_;
+    int size;
 
 };
 
