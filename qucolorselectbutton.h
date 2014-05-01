@@ -9,6 +9,7 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QColorDialog>
+#include <QDebug>
 
 class QUColorSelectButton: public QToolButton
 {

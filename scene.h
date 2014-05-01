@@ -19,7 +19,7 @@ public:
     void setBeta(double);
     void setGamma(double);
     void clipping(QVector<Plane> planes, QVector<QColor> colors);
-    void clipping(Plane plane, QColor color);
+    void clipping(array<int, 3>, double eq, QColor color);
 
 private:
     GLfloat xRot;
@@ -52,6 +52,9 @@ private:
     void getIndexArray();
     void drawFigure();
     array<double, 4> getGLColor(const QColor&);
+    Plane* plane;
+    QColor color;
+    Polyhedron* polyhedron;
 
  protected:
     void initializeGL();

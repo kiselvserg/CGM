@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>914</width>
+    <width>1003</width>
     <height>614</height>
    </rect>
   </property>
@@ -62,6 +62,9 @@
       </item>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -70,7 +73,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>327</width>
+          <width>400</width>
           <height>0</height>
          </size>
         </property>
@@ -81,55 +84,138 @@
          <attribute name="title">
           <string>Tab 1</string>
          </attribute>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QPushButton" name="drawButton">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>30</y>
-            <width>82</width>
-            <height>17</height>
+            <x>10</x>
+            <y>410</y>
+            <width>75</width>
+            <height>23</height>
            </rect>
           </property>
           <property name="text">
-           <string>RadioButton</string>
+           <string>Draw</string>
           </property>
          </widget>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QWidget" name="horizontalLayoutWidget_15">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>50</y>
-            <width>82</width>
-            <height>17</height>
+            <x>10</x>
+            <y>80</y>
+            <width>381</width>
+            <height>231</height>
            </rect>
           </property>
-          <property name="text">
-           <string>RadioButton</string>
-          </property>
+          <layout class="QHBoxLayout" name="millerIndecies">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMaximumSize</enum>
+           </property>
+          </layout>
          </widget>
-         <widget class="QRadioButton" name="radioButton_3">
+         <widget class="QWidget" name="">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>70</y>
-            <width>82</width>
-            <height>17</height>
+            <x>9</x>
+            <y>9</y>
+            <width>287</width>
+            <height>33</height>
            </rect>
           </property>
-          <property name="text">
-           <string>RadioButton</string>
-          </property>
-         </widget>
-         <widget class="QWidget" name="verticalLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>30</x>
-            <y>120</y>
-            <width>160</width>
-            <height>80</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3"/>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetNoConstraint</enum>
+           </property>
+           <item>
+            <widget class="QDoubleSpinBox" name="alphaSpinBox">
+             <property name="minimumSize">
+              <size>
+               <width>91</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <italic>false</italic>
+              </font>
+             </property>
+             <property name="prefix">
+              <string>α = </string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="singleStep">
+              <double>0.010000000000000</double>
+             </property>
+             <property name="value">
+              <double>1.900000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="betaSpinBox">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>91</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <italic>false</italic>
+              </font>
+             </property>
+             <property name="prefix">
+              <string>β = </string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="singleStep">
+              <double>0.010000000000000</double>
+             </property>
+             <property name="value">
+              <double>0.220000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="gammaSpinBox">
+             <property name="minimumSize">
+              <size>
+               <width>91</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>MS Shell Dlg 2</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="prefix">
+              <string>γ = </string>
+             </property>
+             <property name="decimals">
+              <number>3</number>
+             </property>
+             <property name="singleStep">
+              <double>0.010000000000000</double>
+             </property>
+             <property name="value">
+              <double>0.500000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_2">
@@ -141,125 +227,6 @@
       </item>
      </layout>
     </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="minimumSize">
-         <size>
-          <width>305</width>
-          <height>64</height>
-         </size>
-        </property>
-        <property name="title">
-         <string>Set coefficients</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QDoubleSpinBox" name="alphaSpinBox">
-           <property name="minimumSize">
-            <size>
-             <width>91</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-             <italic>false</italic>
-            </font>
-           </property>
-           <property name="prefix">
-            <string>α = </string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="value">
-            <double>1.900000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="betaSpinBox">
-           <property name="minimumSize">
-            <size>
-             <width>91</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-             <italic>false</italic>
-            </font>
-           </property>
-           <property name="prefix">
-            <string>β = </string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="value">
-            <double>0.220000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="gammaSpinBox">
-           <property name="minimumSize">
-            <size>
-             <width>91</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>10</pointsize>
-             <weight>50</weight>
-             <italic>false</italic>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="prefix">
-            <string>γ = </string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="value">
-            <double>0.500000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -267,7 +234,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>914</width>
+     <width>1003</width>
      <height>21</height>
     </rect>
    </property>

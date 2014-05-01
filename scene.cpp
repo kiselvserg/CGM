@@ -9,9 +9,9 @@ GLfloat VertexArray[12][3];
 GLfloat ColorArray[12][3];
 GLubyte IndexArray[20][3];
 
-Scene::Scene(QWidget* parent) : QGLWidget(parent)
+Scene::Scene(QWidget* parent) : QGLWidget(parent), plane(nullptr)
 {
-    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.5;
+    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.1;
     colors << QColor("#FFFF00") << QColor("#FFCCDE") << QColor("#808080") << QColor("#1853C3");
 }
 
@@ -27,39 +27,6 @@ void Scene::initializeGL()
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-}
-
-void Scene::resizeGL(int nWidth, int nHeight)
-{
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    GLfloat ratio=(GLfloat)nHeight/(GLfloat)nWidth;
-
-    if (nWidth>=nHeight)
-      glOrtho(-1.0/ratio, 1.0/ratio, -1.0, 1.0, -10.0, 1.0);
-    else
-      glOrtho(-1.0, 1.0, -1.0*ratio, 1.0*ratio, -10.0, 1.0);
-
-    glViewport(0, 0, (GLint)nWidth, (GLint)nHeight);
-}
-
-void Scene::paintGL()
-{
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //glEnable(GL_LIGHTING);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glScalef(nSca, nSca, nSca);
-    glTranslatef(0.0f, zTra, 0.0f);
-    glRotatef(xRot, 1.0f, 0.0f, 0.0f);
-    glRotatef(yRot, 0.0f, 1.0f, 0.0f);
-    glRotatef(zRot, 0.0f, 0.0f, 1.0f);
-
-    //drawAxis();
 
     vector<Point> vertexes;
     vertexes.resize(3);
@@ -173,48 +140,50 @@ void Scene::paintGL()
     polygons.push_back(polygon5);
     polygons.push_back(polygon6);
     //Создаём полигедрон из полигонов
-    Polyhedron polyhedron(polygons);
-    //polyhedron.draw();
+    polyhedron = new Polyhedron(polygons);
+     qDebug() << "here";
+}
 
-    // Создаём плоскость
-    double alpha_ = 2.5;
-    double beta_ = 1.85;
-    double gamma_ = 4.34;
+void Scene::resizeGL(int nWidth, int nHeight)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-    // Плоскость х+у+z=alpha
-    Plane plane0(1, 1, 1, alpha_);
+    GLfloat ratio=(GLfloat)nHeight/(GLfloat)nWidth;
 
-    // Плоскости y+z=beta, х+z=beta, х+у=beta
-    Plane plane10(0, 1, 1, beta_);
-    Plane plane11(1, 0, 1, beta_);
-    Plane plane12(1, 1, 0, beta_);
+    if (nWidth>=nHeight)
+      glOrtho(-1.0/ratio, 1.0/ratio, -1.0, 1.0, -10.0, 1.0);
+    else
+      glOrtho(-1.0, 1.0, -1.0*ratio, 1.0*ratio, -10.0, 1.0);
 
-    // Плоскости x=1.1, y=1.1, z=1.1
-    Plane plane20(1, 0, 0, 1);
-    Plane plane21(0, 1, 0, 1);
-    Plane plane22(0, 0, 1, 1);
+    glViewport(0, 0, (GLint)nWidth, (GLint)nHeight);
+}
 
-    // Плоскости 3х+у+z=gamma, х+3у+z=gamma, х+у+3z=gamma
-    Plane plane30(3, 1, 1, gamma_);
-    Plane plane31(1, 3, 1, gamma_);
-    Plane plane32(1, 1, 3, gamma_);
-    polyhedron.polyhedronGroupSection(plane0, true, &polyhedron, 0, getGLColor(colors[0]));
+void Scene::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Сечём остатки другой плоскостью
+    //glEnable(GL_LIGHTING);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-    polyhedron.polyhedronGroupSection(plane10, true, &polyhedron, 0, getGLColor(colors[1]));
-    polyhedron.polyhedronGroupSection(plane11, true, &polyhedron, 0, getGLColor(colors[1]));
-    polyhedron.polyhedronGroupSection(plane12, true, &polyhedron, 0, getGLColor(colors[1]));
+    glScalef(nSca, nSca, nSca);
+    glTranslatef(0.0f, zTra, 0.0f);
+    glRotatef(xRot, 1.0f, 0.0f, 0.0f);
+    glRotatef(yRot, 0.0f, 1.0f, 0.0f);
+    glRotatef(zRot, 0.0f, 0.0f, 1.0f);
 
-    polyhedron.polyhedronGroupSection(plane20, true, &polyhedron, 0, getGLColor(colors[2]));
-    polyhedron.polyhedronGroupSection(plane21, true, &polyhedron, 0, getGLColor(colors[2]));
-    polyhedron.polyhedronGroupSection(plane22, true, &polyhedron, 0, getGLColor(colors[2]));
+//    float alpha = 2.5;
+//    float beta = 1.85;
+//    float gamma = 4.34;
+//    float psi = 2.63;
 
-    polyhedron.polyhedronGroupSection(plane30, true, &polyhedron, 0, getGLColor(colors[3]));
-    polyhedron.polyhedronGroupSection(plane31, true, &polyhedron, 0, getGLColor(colors[3]));
-    polyhedron.polyhedronGroupSection(plane32, true, &polyhedron, 0, getGLColor(colors[3]));
-
-    polyhedron.draw();
+    if(plane != nullptr)
+    {
+        //qDebug() << "not null_ptr";
+        polyhedron->polyhedronGroupSection(*plane, true, polyhedron, 0, getGLColor(color));
+    }
+    polyhedron->draw();
 }
 
 void Scene::setAlpha(double _alpha)
@@ -230,6 +199,16 @@ void Scene::setBeta(double _beta)
 void Scene::setGamma(double _g)
 {
     this->gamma = _g;
+}
+
+void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
+{
+    if(plane != nullptr) delete plane;
+    plane = new Plane(arr[0], arr[1], arr[2], eq);
+    color = clr;
+    qDebug() << "coef:" << arr[0] << arr[1] << arr[2] << eq;
+    qDebug() << "color" << color.toRgb();
+    this->updateGL();
 }
 
 void Scene::mousePressEvent(QMouseEvent* pe)

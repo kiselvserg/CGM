@@ -50,6 +50,12 @@ QUColorSelectButton::QUColorSelectButton( const QString& text, QWidget* parent )
     connect( v, SIGNAL( activated(QModelIndex) ),
         this, SLOT( selectItemColor(QModelIndex) ) );
 
+    //QColor clr = .data( Qt::BackgroundRole ).value< QColor >();
+    QColor clr = m->data(m->index(1,1),Qt::BackgroundRole).value<QColor>();
+    setColor( clr );
+    emit colorChanged( clr );
+    qDebug() << "color" << clr;
+
     QWidgetAction* wa = new QWidgetAction( menu );
     wa->setDefaultWidget( v );
     menu->addAction( wa );
@@ -76,6 +82,7 @@ void QUColorSelectButton::selectOtherColor()
 void QUColorSelectButton::selectItemColor( const QModelIndex& idx )
 {
     QColor clr = idx.data( Qt::BackgroundRole ).value< QColor >();
+    //QColor clr = QColor::fromRgba(idx.data(Qt::BackgroundRole).toUInt());
     setColor( clr );
     emit colorChanged( clr );
     menu()->hide();
