@@ -7,7 +7,7 @@ Polyhedron::Polyhedron()
 
 Polyhedron::Polyhedron(const vector<CPolygon>& polygons)
 {
-	polygons_ = polygons;
+    polygons_ = polygons;
 }
 
 void Polyhedron::clear()

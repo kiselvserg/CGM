@@ -31,9 +31,7 @@ void MyGroupBox::radioSelected()
 {
     for(int i = 0; i <size; i++)
         if(radio[i]->isChecked())
-        {
             emit radioButtonSelected(radio[i]->text(), colorSelections[i]->color(), type_);
-        }
 }
 
 void MyGroupBox::colorChanged(QColor)

@@ -10,6 +10,7 @@ private:
 public:
 	Polyhedron();
     Polyhedron(const vector<CPolygon>& polygons);
+    void setPolygons(const vector<CPolygon>& polygons) { polygons_ = polygons; }
     void addPolygonsList(const list<CPolygon> &polygons);
 	void clear();
 	void draw();

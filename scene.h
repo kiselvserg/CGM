@@ -20,6 +20,7 @@ public:
     void setGamma(double);
     void clipping(QVector<Plane> planes, QVector<QColor> colors);
     void clipping(array<int, 3>, double eq, QColor color);
+    void clearAll();
 
 private:
     GLfloat xRot;
@@ -32,8 +33,8 @@ private:
     double alpha;
     double beta;
     double gamma;
-
     QVector<QColor> colors;
+    vector<CPolygon> polygons;
 
     void scale_plus();
     void scale_minus();

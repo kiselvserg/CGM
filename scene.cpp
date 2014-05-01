@@ -130,7 +130,7 @@ void Scene::initializeGL()
     // Для особо одарённых
 
     // Создаём вектор полигонов
-    vector<CPolygon> polygons;
+    //vector<CPolygon> polygons;
 
     // Запихиваем в него полигоны
     polygons.push_back(polygon1);
@@ -141,7 +141,6 @@ void Scene::initializeGL()
     polygons.push_back(polygon6);
     //Создаём полигедрон из полигонов
     polyhedron = new Polyhedron(polygons);
-     qDebug() << "here";
 }
 
 void Scene::resizeGL(int nWidth, int nHeight)
@@ -209,6 +208,17 @@ void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
     qDebug() << "coef:" << arr[0] << arr[1] << arr[2] << eq;
     qDebug() << "color" << color.toRgb();
     this->updateGL();
+}
+
+void Scene::clearAll()
+{
+    polyhedron->clear();
+    polyhedron->setPolygons(polygons);
+    //delete this->polyhedron;
+    delete plane;
+    plane = nullptr;
+    //polyhedron = new Polyhedron(polygons);
+    updateGL();
 }
 
 void Scene::mousePressEvent(QMouseEvent* pe)

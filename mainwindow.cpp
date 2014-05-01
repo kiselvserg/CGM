@@ -98,6 +98,13 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
 void MainWindow::on_drawButton_clicked()
 {
     array<int, 3> value = {plane[0].digitValue(), plane[1].digitValue(), plane[2].digitValue()};
-
     scene->clipping(value, equals, currentColor);
+    alphaBox->unSelect();
+    betaBox->unSelect();
+    gammaBox->unSelect();
+}
+
+void MainWindow::on_clearAllButton_clicked()
+{
+    scene->clearAll();
 }

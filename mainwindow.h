@@ -27,6 +27,8 @@ private slots:
 
     void on_drawButton_clicked();
 
+    void on_clearAllButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Scene* scene;
