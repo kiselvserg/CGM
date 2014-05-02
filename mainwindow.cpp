@@ -31,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(scene, SIGNAL(clipChanged(int)), this, SLOT(updateSlider(int)));
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), scene, SLOT(showScene(int)));
-
-    //scene->updateGL();
 }
 
 MainWindow::~MainWindow()
@@ -70,7 +68,6 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
         betaBox->unSelect();
         gammaBox->unSelect();
         equals = 3.0 / ui->alphaSpinBox->value();
-        //*equals = 3.0/(*equals);
         break;
     case 2:
         ui->alphaSpinBox->setEnabled(0);
@@ -79,7 +76,6 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
         equals = 2.0/ui->betaSpinBox->value();
         alphaBox->unSelect();
         gammaBox->unSelect();
-        //*equals = 2.0/(*equals);
         break;
     case 3:
         ui->alphaSpinBox->setEnabled(0);
@@ -88,8 +84,6 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
         equals = 11.0/ui->gammaSpinBox->value();
         betaBox->unSelect();
         alphaBox->unSelect();
-        //equals = &gamma;
-        //*equals = 11.0/(*equals);
         break;
     }
     plane = str;
@@ -100,6 +94,8 @@ void MainWindow::on_drawButton_clicked()
 {
     array<int, 3> value = {plane[0].digitValue(), plane[1].digitValue(), plane[2].digitValue()};
     scene->clipping(value, equals, currentColor);
+    if(ui->label->text().isEmpty()) { ui->label->setText(tr("<font color = '%1'>{%2}</font>").arg(currentColor.name()).arg(plane)); return; }
+    ui->label->setText(ui->label->text() + tr(" + <font color = '%1'>{%2}</font>").arg(currentColor.name()).arg(plane));
 }
 
 void MainWindow::on_clearAllButton_clicked()
@@ -110,11 +106,14 @@ void MainWindow::on_clearAllButton_clicked()
 void MainWindow::on_undoButton_clicked()
 {
     scene->undo();
+    QStringList list = ui->label->text().split("+");
+    list.removeLast();
+    ui->label->clear();
+    for(auto i : list) ui->label->setText(ui->label->text() + i);
 }
 
 void MainWindow::updateSlider(int value)
 {
-    qDebug() << "value emitted:" << value;
     ui->horizontalSlider->setMaximum(value);
     ui->horizontalSlider->setValue(value);
 }
