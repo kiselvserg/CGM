@@ -5,9 +5,9 @@ Polyhedron::Polyhedron()
 {
 }
 
-Polyhedron::Polyhedron(const vector<Polygon>& polygons)
+Polyhedron::Polyhedron(const vector<CPolygon>& polygons)
 {
-	polygons_ = polygons;
+    polygons_ = polygons;
 }
 
 void Polyhedron::clear()
@@ -15,9 +15,9 @@ void Polyhedron::clear()
 	polygons_.clear();
 }
 
-void Polyhedron::addPolygonsList(const list<Polygon> &polygons)
+void Polyhedron::addPolygonsList(const list<CPolygon> &polygons)
 {
-	for(list<Polygon>::const_iterator i = polygons.begin() ; i != polygons.end(); ++i)
+    for(list<CPolygon>::const_iterator i = polygons.begin() ; i != polygons.end(); ++i)
 		polygons_.push_back(*i);
 }
 
@@ -30,11 +30,11 @@ void Polyhedron::draw()
 bool Polyhedron::polyhedronSection(const Plane& plane,
 								   Polyhedron* polyhedron1,
 								   Polyhedron* polyhedron2,
-								   array<float, 4> color)
+                                   array<double, 4> color)
 {
-	Polygon tempPolygon1, tempPolygon2;
+    CPolygon tempPolygon1, tempPolygon2;
 	list<Point> tempSectionLine;
-	list<Polygon> polygonsList1, polygonsList2;
+    list<CPolygon> polygonsList1, polygonsList2;
 	list<list<Point>> sectionLines;
 
 	// Для дебага
@@ -111,8 +111,8 @@ bool Polyhedron::polyhedronSection(const Plane& plane,
 
 	if(sectionLines.size() > 0 && sectionLines.front().size() > 2)
 	{
-		polygonsList1.push_back(Polygon(sectionLines.front(), color));
-		polygonsList2.push_back(Polygon(sectionLines.front(), color));
+        polygonsList1.push_back(CPolygon(sectionLines.front(), color));
+        polygonsList2.push_back(CPolygon(sectionLines.front(), color));
 	}
 
 
@@ -134,7 +134,7 @@ bool Polyhedron::polyhedronGroupSection(const Plane& plane,
 							//const bool& someVectorSymmetry,
 							Polyhedron* polyhedron1,
 							Polyhedron* polyhedron2,
-							array<float, 4> color)
+                            array<double, 4> color)
 {
 	bool temp = false;
 	temp = temp || this->polyhedronSection(plane, polyhedron1, polyhedron2, color);

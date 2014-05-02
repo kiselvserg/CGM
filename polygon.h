@@ -1,5 +1,5 @@
-#ifndef POLYGON_H
-#define POLYGON_H
+#ifndef CPolygon_H
+#define CPolygon_H
 
 #include <QtOpenGL>
 
@@ -14,17 +14,17 @@
 using namespace std;
 
 
-class Polygon
+class CPolygon
 {
 	private:
 		vector<Point> vertexes_;
-		array<float, 4> color_;
+        array<double, 4> color_;
 	public:
 
-		Polygon(array<float, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
-		Polygon(vector<Point> vertexes, array<float, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
-		Polygon(list<Point> vertexes, array<float, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
-        Polygon& operator = (Polygon const & polygon);
+        CPolygon(array<double, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
+        CPolygon(vector<Point> vertexes, array<double, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
+        CPolygon(list<Point> vertexes, array<double, 4> color = {{0.20f, 0.20f, 1.00f, 0.5f}});
+        CPolygon& operator = (CPolygon const & CPolygon);
 		void clear();
 		inline void addVertex(const Point &vertex); // Добавляем вершину (в конец, а последовательность важна)
 		void addVertexesList(const list<Point> &vertexes);
@@ -34,15 +34,15 @@ class Polygon
 
 		// Принимаем плоскость и две ссылки на указатели
 		// Если функция создаёт полигоны, то первый обязательно НАД секущей плоскостью (>0)
-		bool polygonSection(Plane plane,
-							Polygon* polygonPointer1,
-							Polygon* polygonPointer2,
+        bool polygonSection(Plane plane,
+                            CPolygon* CPolygonPointer1,
+                            CPolygon* CPolygonPointer2,
 							list<Point>* sectionStraightLine);
 
-		//void drawPolygon();
+        //void drawCPolygon();
 
 };
 
 
 
-#endif // POLYGON_H
+#endif // CPolygon_H

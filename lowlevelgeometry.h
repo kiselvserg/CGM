@@ -16,17 +16,17 @@ using namespace std;
 
 struct Point
 {
-	float point_[3];
+    double point_[3];
 	Point();
-	Point(const float& firstComponent, const float&  secondComponent, const float&  thirdComponent);
+    Point(const double& firstComponent, const double&  secondComponent, const double&  thirdComponent);
 	bool operator == (Point a);
-	bool operator == (float a);
+    bool operator == (double a);
 	Point operator + (Point a);
 	Point operator - (Point a);
-	float operator / (Point a);
+    double operator / (Point a);
 	Point& operator += (Point a);
-	float& operator [](unsigned int index);
-	const float& getComponent(unsigned int index) const;
+    double& operator [](unsigned int index);
+    const double& getComponent(unsigned int index) const;
 };
 
 struct StraightLine
@@ -61,11 +61,11 @@ struct Piece
 
 struct Plane
 {
-	float coefficients_[4];
+    double coefficients_[4];
 
-	Plane(float firstCoefficient, float secondCoefficient, float thirdCoefficient, float fourthCoefficient);
-	float& operator [](uint index);
-	const float& getCoefficient(uint index) const;
+    Plane(double firstCoefficient, double secondCoefficient, double thirdCoefficient, double fourthCoefficient);
+    double& operator [](uint index);
+    const double& getCoefficient(uint index) const;
 };
 
 struct PlanesGroup_xyzPlanesSymmetry
