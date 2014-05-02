@@ -187,11 +187,9 @@ void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
     color = clr;
     qDebug() << "coef:" << arr[0] << arr[1] << arr[2] << eq;
     qDebug() << "color" << color.toRgb();
-    //previous.append(*polyhedron);
-    emit clipAdded(previous.size());
     this->updateGL();
     previous.append(*polyhedron);
-    emit clipAdded(previous.size()-1);
+    emit clipChanged(previous.size()-1);
 }
 
 void Scene::clearAll()
@@ -200,6 +198,7 @@ void Scene::clearAll()
     polyhedron->setPolygons(polygons);
     previous.clear();
     previous.append(*polyhedron);
+    emit clipChanged(0);
     delete plane;
     plane = nullptr;
     updateGL();
@@ -207,7 +206,9 @@ void Scene::clearAll()
 
 void Scene::undo()
 {
-    *polyhedron = previous.last();
+    *polyhedron = previous[previous.size()-2];
+    previous.remove(previous.size() - 1);
+    emit clipChanged(previous.size()-1);
     delete plane;
     plane = nullptr;
     updateGL();

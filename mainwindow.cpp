@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(betaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
     connect(gammaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
 
-    connect(scene, SIGNAL(clipAdded(int)), this, SLOT(updateSlider(int)));
+    connect(scene, SIGNAL(clipChanged(int)), this, SLOT(updateSlider(int)));
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), scene, SLOT(showScene(int)));
 
     //scene->updateGL();

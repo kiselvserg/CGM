@@ -27,7 +27,7 @@ public slots:
     void showScene(int);
 
 Q_SIGNALS:
-    void clipAdded(int);
+    void clipChanged(int);
 
 
 private:
