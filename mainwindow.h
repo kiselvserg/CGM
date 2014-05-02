@@ -24,10 +24,10 @@ private slots:
     void on_betaSpinBox_valueChanged(double arg1);
     void on_gammaSpinBox_valueChanged(double arg1);
     void clippingPlaneDataSelected(QString, QColor, int);
-
     void on_drawButton_clicked();
-
     void on_clearAllButton_clicked();
+    void on_undoButton_clicked();
+    void updateSlider(int);
 
 private:
     Ui::MainWindow *ui;

@@ -21,6 +21,14 @@ public:
     void clipping(QVector<Plane> planes, QVector<QColor> colors);
     void clipping(array<int, 3>, double eq, QColor color);
     void clearAll();
+    void undo();
+
+public slots:
+    void showScene(int);
+
+Q_SIGNALS:
+    void clipAdded(int);
+
 
 private:
     GLfloat xRot;
@@ -56,6 +64,7 @@ private:
     Plane* plane;
     QColor color;
     Polyhedron* polyhedron;
+    QVector<Polyhedron> previous;
 
  protected:
     void initializeGL();

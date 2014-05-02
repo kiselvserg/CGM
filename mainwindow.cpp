@@ -8,9 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     scene = new Scene();
     ui->sceneLayout->addWidget(scene);
-//    scene->setAlpha(ui->alphaSpinBox->value());
-//    scene->setBeta(ui->betaSpinBox->value());
-//    scene->setGamma(ui->gammaSpinBox->value());
+    ui->horizontalSlider->setMaximum(0);
     alpha = 3.0/ui->alphaSpinBox->value();
     beta = 2.0/ui->betaSpinBox->value();
     gamma = 11.0/ui->gammaSpinBox->value();
@@ -30,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(alphaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
     connect(betaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
     connect(gammaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
+
+    connect(scene, SIGNAL(clipAdded(int)), this, SLOT(updateSlider(int)));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), scene, SLOT(showScene(int)));
 
     //scene->updateGL();
 }
@@ -99,12 +100,21 @@ void MainWindow::on_drawButton_clicked()
 {
     array<int, 3> value = {plane[0].digitValue(), plane[1].digitValue(), plane[2].digitValue()};
     scene->clipping(value, equals, currentColor);
-    alphaBox->unSelect();
-    betaBox->unSelect();
-    gammaBox->unSelect();
 }
 
 void MainWindow::on_clearAllButton_clicked()
 {
     scene->clearAll();
+}
+
+void MainWindow::on_undoButton_clicked()
+{
+    scene->undo();
+}
+
+void MainWindow::updateSlider(int value)
+{
+    qDebug() << "value emitted:" << value;
+    ui->horizontalSlider->setMaximum(value);
+    ui->horizontalSlider->setValue(value);
 }

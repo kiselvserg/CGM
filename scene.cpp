@@ -141,6 +141,7 @@ void Scene::initializeGL()
     polygons.push_back(polygon6);
     //Создаём полигедрон из полигонов
     polyhedron = new Polyhedron(polygons);
+    previous.append(*polyhedron);
 }
 
 void Scene::resizeGL(int nWidth, int nHeight)
@@ -172,32 +173,11 @@ void Scene::paintGL()
     glRotatef(yRot, 0.0f, 1.0f, 0.0f);
     glRotatef(zRot, 0.0f, 0.0f, 1.0f);
 
-//    float alpha = 2.5;
-//    float beta = 1.85;
-//    float gamma = 4.34;
-//    float psi = 2.63;
-
     if(plane != nullptr)
     {
-        //qDebug() << "not null_ptr";
         polyhedron->polyhedronGroupSection(*plane, true, polyhedron, 0, getGLColor(color));
     }
     polyhedron->draw();
-}
-
-void Scene::setAlpha(double _alpha)
-{
-    this->alpha = _alpha;
-}
-
-void Scene::setBeta(double _beta)
-{
-    this->beta = _beta;
-}
-
-void Scene::setGamma(double _g)
-{
-    this->gamma = _g;
 }
 
 void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
@@ -207,17 +187,39 @@ void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
     color = clr;
     qDebug() << "coef:" << arr[0] << arr[1] << arr[2] << eq;
     qDebug() << "color" << color.toRgb();
+    //previous.append(*polyhedron);
+    emit clipAdded(previous.size());
     this->updateGL();
+    previous.append(*polyhedron);
+    emit clipAdded(previous.size()-1);
 }
 
 void Scene::clearAll()
 {
     polyhedron->clear();
     polyhedron->setPolygons(polygons);
-    //delete this->polyhedron;
+    previous.clear();
+    previous.append(*polyhedron);
     delete plane;
     plane = nullptr;
-    //polyhedron = new Polyhedron(polygons);
+    updateGL();
+}
+
+void Scene::undo()
+{
+    *polyhedron = previous.last();
+    delete plane;
+    plane = nullptr;
+    updateGL();
+}
+
+void Scene::showScene(int value)
+{
+    qDebug() << "value set:" << value;
+    if(value >= previous.size()) return;
+    *polyhedron = previous[value];
+    delete plane;
+    plane = nullptr;
     updateGL();
 }
 
