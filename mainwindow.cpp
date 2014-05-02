@@ -108,6 +108,7 @@ void MainWindow::on_drawButton_clicked()
 void MainWindow::on_clearAllButton_clicked()
 {
     scene->clearAll();
+    ui->label->clear();
 }
 
 void MainWindow::on_undoButton_clicked()
