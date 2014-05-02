@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->millerIndecies->addWidget(betaBox);
     ui->millerIndecies->addWidget(gammaBox);
 
+    ui->undoButton->setEnabled(false);
+    ui->clearAllButton->setEnabled(false);
+    ui->drawButton->setEnabled(false);
+
     connect(alphaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
     connect(betaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
     connect(gammaBox, SIGNAL(radioButtonSelected(QString,QColor,int)), this, SLOT(clippingPlaneDataSelected(QString,QColor,int)));
@@ -59,6 +63,7 @@ void MainWindow::on_gammaSpinBox_valueChanged(double arg1)
 
 void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
 {
+    ui->drawButton->setEnabled(true);
     switch(i)
     {
     case 1:
@@ -92,6 +97,8 @@ void MainWindow::clippingPlaneDataSelected(QString str, QColor col, int i)
 
 void MainWindow::on_drawButton_clicked()
 {
+    ui->undoButton->setEnabled(true);
+    ui->clearAllButton->setEnabled(true);
     array<int, 3> value = {plane[0].digitValue(), plane[1].digitValue(), plane[2].digitValue()};
     scene->clipping(value, equals, currentColor);
     if(ui->label->text().isEmpty()) { ui->label->setText(tr("<font color = '%1'>{%2}</font>").arg(currentColor.name()).arg(plane)); return; }
@@ -114,6 +121,7 @@ void MainWindow::on_undoButton_clicked()
 
 void MainWindow::updateSlider(int value)
 {
+    if(value == 0 ) { ui->undoButton->setEnabled(false); ui->clearAllButton->setEnabled(false); }
     ui->horizontalSlider->setMaximum(value);
     ui->horizontalSlider->setValue(value);
 }
