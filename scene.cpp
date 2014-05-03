@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <math.h>
 
-#include "Scene.h"
+#include "scene.h"
 
 const static double pi=3.141593, k=pi/180;
 
@@ -17,31 +17,17 @@ Scene::Scene(QWidget* parent) : QGLWidget(parent), plane(nullptr)
 
 void Scene::initializeGL()
 {
+	//glEnable(GL_MULTISAMPLE);
+	GLint bufs;
+	GLint samples;
+	glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+	glGetIntegerv(GL_SAMPLES, &samples);
     qglClearColor(this->palette().color(QPalette::Window));
-    glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
-
-    getVertexArray();
-    getColorArray();
-    getIndexArray();
+	glEnable(GL_DEPTH_TEST);
+	//glShadeModel(GL_SMOOTH);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-
-    vector<Point> vertexes;
-    vertexes.resize(3);
-    vertexes[0][0] = 1.0f;
-    vertexes[0][1] = 0.0f;
-    vertexes[0][2] = 0.0f;
-    vertexes[1][0] = 0.0f;
-    vertexes[1][1] = 1.0f;
-    vertexes[1][2] = 0.0f;
-    vertexes[2][0] = 0.0f;
-    vertexes[2][1] = 0.0f;
-    vertexes[2][2] = 1.0f;
-
-    vertexes[1][0] = 1.0f;
-    vertexes[1][1] = 0.0f;
 
     vector<Point> tempVector1;
 
@@ -140,7 +126,8 @@ void Scene::initializeGL()
     polygons.push_back(polygon5);
     polygons.push_back(polygon6);
     //Создаём полигедрон из полигонов
-    polyhedron = new Polyhedron(polygons);
+	polyhedron = new Polyhedron();
+	polyhedron->addPolygonsList(polygons);
     previous.append(*polyhedron);
 }
 
@@ -191,7 +178,7 @@ void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
 void Scene::clearAll()
 {
     polyhedron->clear();
-    polyhedron->setPolygons(polygons);
+	polyhedron->addPolygonsList(polygons);
     previous.clear();
     previous.append(*polyhedron);
     emit clipChanged(0);
@@ -365,154 +352,7 @@ void Scene::drawAxis()
     glEnd();
 }
 
-void Scene::getVertexArray()
-{
-    GLfloat R=0.75;
 
-    GLfloat a=4*R/sqrt(10+2*sqrt(5));
-    GLfloat alpha=acos((1-a*a/2/R/R));
-
-    VertexArray[0][0]=0;
-    VertexArray[0][1]=0;
-    VertexArray[0][2]=R;
-
-    VertexArray[1][0]=R*sin(alpha)*sin(0);
-    VertexArray[1][1]=R*sin(alpha)*cos(0);
-    VertexArray[1][2]=R*cos(alpha);
-
-    VertexArray[2][0]=R*sin(alpha)*sin(72*k);
-    VertexArray[2][1]=R*sin(alpha)*cos(72*k);
-    VertexArray[2][2]=R*cos(alpha);
-
-    VertexArray[3][0]=R*sin(alpha)*sin(2*72*k);
-    VertexArray[3][1]=R*sin(alpha)*cos(2*72*k);
-    VertexArray[3][2]=R*cos(alpha);
-
-    VertexArray[4][0]=R*sin(alpha)*sin(3*72*k);
-    VertexArray[4][1]=R*sin(alpha)*cos(3*72*k);
-    VertexArray[4][2]=R*cos(alpha);
-
-    VertexArray[5][0]=R*sin(alpha)*sin(4*72*k);
-    VertexArray[5][1]=R*sin(alpha)*cos(4*72*k);
-    VertexArray[5][2]=R*cos(alpha);
-
-    VertexArray[6][0]=R*sin(pi-alpha)*sin(-36*k);
-    VertexArray[6][1]=R*sin(pi-alpha)*cos(-36*k);
-    VertexArray[6][2]=R*cos(pi-alpha);
-
-    VertexArray[7][0]=R*sin(pi-alpha)*sin(36*k);
-    VertexArray[7][1]=R*sin(pi-alpha)*cos(36*k);
-    VertexArray[7][2]=R*cos(pi-alpha);
-
-    VertexArray[8][0]=R*sin(pi-alpha)*sin((36+72)*k);
-    VertexArray[8][1]=R*sin(pi-alpha)*cos((36+72)*k);
-    VertexArray[8][2]=R*cos(pi-alpha);
-
-    VertexArray[9][0]=R*sin(pi-alpha)*sin((36+2*72)*k);
-    VertexArray[9][1]=R*sin(pi-alpha)*cos((36+2*72)*k);
-    VertexArray[9][2]=R*cos(pi-alpha);
-
-    VertexArray[10][0]=R*sin(pi-alpha)*sin((36+3*72)*k);
-    VertexArray[10][1]=R*sin(pi-alpha)*cos((36+3*72)*k);
-    VertexArray[10][2]=R*cos(pi-alpha);
-
-    VertexArray[11][0]=0;
-    VertexArray[11][1]=0;
-    VertexArray[11][2]=-R;
-}
-
-void Scene::getColorArray()
-{
-    for (int i=0; i<12; i++)
-    {
-      ColorArray[i][0]=0.1f*(qrand()%11);
-      ColorArray[i][1]=0.1f*(qrand()%11);
-      ColorArray[i][2]=0.1f*(qrand()%11);
-    }
-}
-
-void Scene::getIndexArray()
-{
-    IndexArray[0][0]=0;
-    IndexArray[0][1]=2;
-    IndexArray[0][2]=1;
-
-    IndexArray[1][0]=0;
-    IndexArray[1][1]=3;
-    IndexArray[1][2]=2;
-
-    IndexArray[2][0]=0;
-    IndexArray[2][1]=4;
-    IndexArray[2][2]=3;
-
-    IndexArray[3][0]=0;
-    IndexArray[3][1]=5;
-    IndexArray[3][2]=4;
-
-    IndexArray[4][0]=0;
-    IndexArray[4][1]=1;
-    IndexArray[4][2]=5;
-
-    IndexArray[5][0]=6;
-    IndexArray[5][1]=1;
-    IndexArray[5][2]=7;
-
-    IndexArray[6][0]=7;
-    IndexArray[6][1]=1;
-    IndexArray[6][2]=2;
-
-    IndexArray[7][0]=7;
-    IndexArray[7][1]=2;
-    IndexArray[7][2]=8;
-
-    IndexArray[8][0]=8;
-    IndexArray[8][1]=2;
-    IndexArray[8][2]=3;
-
-    IndexArray[9][0]=8;
-    IndexArray[9][1]=3;
-    IndexArray[9][2]=9;
-
-    IndexArray[10][0]=9;
-    IndexArray[10][1]=3;
-    IndexArray[10][2]=4;
-
-    IndexArray[11][0]=9;
-    IndexArray[11][1]=4;
-    IndexArray[11][2]=10;
-
-    IndexArray[12][0]=10;
-    IndexArray[12][1]=4;
-    IndexArray[12][2]=5;
-
-    IndexArray[13][0]=10;
-    IndexArray[13][1]=5;
-    IndexArray[13][2]=6;
-
-    IndexArray[14][0]=6;
-    IndexArray[14][1]=5;
-    IndexArray[14][2]=1;
-
-    IndexArray[15][0]=7;
-    IndexArray[15][1]=11;
-    IndexArray[15][2]=6;
-
-    IndexArray[16][0]=8;
-    IndexArray[16][1]=11;
-    IndexArray[16][2]=7;
-
-    IndexArray[17][0]=9;
-    IndexArray[17][1]=11;
-    IndexArray[17][2]=8;
-
-    IndexArray[18][0]=10;
-    IndexArray[18][1]=11;
-    IndexArray[18][2]=9;
-
-    IndexArray[19][0]=6;
-    IndexArray[19][1]=11;
-    IndexArray[19][2]=10;
-}
 
 void Scene::drawFigure()
 {
