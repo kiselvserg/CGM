@@ -17,9 +17,14 @@ Scene::Scene(QWidget* parent) : QGLWidget(parent), plane(nullptr)
 
 void Scene::initializeGL()
 {
+	//glEnable(GL_MULTISAMPLE);
+	GLint bufs;
+	GLint samples;
+	glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+	glGetIntegerv(GL_SAMPLES, &samples);
     qglClearColor(this->palette().color(QPalette::Window));
-    glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+	//glShadeModel(GL_SMOOTH);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
