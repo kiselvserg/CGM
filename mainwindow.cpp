@@ -117,7 +117,9 @@ void MainWindow::on_undoButton_clicked()
     QStringList list = ui->label->text().split("+");
     list.removeLast();
     ui->label->clear();
-    for(auto i : list) ui->label->setText(ui->label->text() + i);
+    if(list.isEmpty()) { return; }
+    ui->label->setText(list.first());
+    for(int i = 1; i < list.size(); i++) ui->label->setText(ui->label->text() + " + " + list[i]);
 }
 
 void MainWindow::updateSlider(int value)
