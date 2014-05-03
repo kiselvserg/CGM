@@ -48,6 +48,7 @@ void CPolygon::draw()
 
 	//glPolygonMode();
 
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_POLYGON);
 
@@ -155,6 +156,7 @@ bool CPolygon::polygonSection(Plane plane,
 
 		newPolygonsVertexes[1 - (pointsAccessoryVector[i] > 0)].push_back(vertexes_[i]);
 	}
+
 	if(lineOnPlane == true &&  pointsProvisionVector.back() == 0)
 	{
 		tempSectionLine.push_back(vertexes_.back());

@@ -42,7 +42,12 @@ private:
     double beta;
     double gamma;
     QVector<QColor> colors;
-    vector<CPolygon> polygons;
+	list<CPolygon> polygons;
+
+	Plane* plane;
+	QColor color;
+	Polyhedron* polyhedron;
+	QVector<Polyhedron> previous;
 
     void scale_plus();
     void scale_minus();
@@ -56,15 +61,8 @@ private:
 
     void drawAxis();
 
-    void getVertexArray();
-    void getColorArray();
-    void getIndexArray();
     void drawFigure();
     array<double, 4> getGLColor(const QColor&);
-    Plane* plane;
-    QColor color;
-    Polyhedron* polyhedron;
-    QVector<Polyhedron> previous;
 
  protected:
     void initializeGL();
