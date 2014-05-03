@@ -31,14 +31,14 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Scene* scene;
-    QVector<QRadioButton*> radiobuttons;
-    QUColorSelectButton *colorSelectButton;
-    MyGroupBox *alphaBox, *betaBox, *gammaBox;
-    QString plane;
-    double equals;
-    double alpha, beta, gamma;
-    QColor currentColor;
+    Scene* scene_;
+    QVector<QRadioButton*> radiobuttons_;
+    QUColorSelectButton *colorSelectButton_;
+    MyGroupBox *alphaBox_, *betaBox_, *gammaBox_;
+    QString plane_;
+    double equals_;
+    double alpha_, beta_, gamma_;
+    QColor currentColor_;
 };
 
 #endif // MAINWINDOW_H

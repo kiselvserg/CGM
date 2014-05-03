@@ -19,7 +19,7 @@ public:
     void setBeta(double);
     void setGamma(double);
     void clipping(QVector<Plane> planes, QVector<QColor> colors);
-    void clipping(array<int, 3>, double eq, QColor color);
+    void clipping(array<int, 3>&, double eq, const QColor& color);
     void clearAll();
     void undo();
 
@@ -38,16 +38,12 @@ private:
     GLfloat nSca;
 
     QPoint ptrMousePosition;
-    double alpha;
-    double beta;
-    double gamma;
-    QVector<QColor> colors;
-	list<CPolygon> polygons;
+    list<CPolygon> polygons_;
 
-	Plane* plane;
-	QColor color;
-	Polyhedron* polyhedron;
-	QVector<Polyhedron> previous;
+    Plane* plane_;
+    QColor color_;
+    Polyhedron* polyhedron_;
+    QVector<Polyhedron> previous_;
 
     void scale_plus();
     void scale_minus();
@@ -62,7 +58,7 @@ private:
     void drawAxis();
 
     void drawFigure();
-    array<double, 4> getGLColor(const QColor&);
+    array<double, 4> getGLColor(const QColor& color);
 
  protected:
     void initializeGL();

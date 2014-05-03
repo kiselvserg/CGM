@@ -9,10 +9,9 @@ GLfloat VertexArray[12][3];
 GLfloat ColorArray[12][3];
 GLubyte IndexArray[20][3];
 
-Scene::Scene(QWidget* parent) : QGLWidget(parent), plane(nullptr)
+Scene::Scene(QWidget* parent) : QGLWidget(parent), plane_(nullptr)
 {
     xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.1;
-    colors << QColor("#FFFF00") << QColor("#FFCCDE") << QColor("#808080") << QColor("#1853C3");
 }
 
 void Scene::initializeGL()
@@ -119,16 +118,16 @@ void Scene::initializeGL()
     //vector<CPolygon> polygons;
 
     // Запихиваем в него полигоны
-    polygons.push_back(polygon1);
-    polygons.push_back(polygon2);
-    polygons.push_back(polygon3);
-    polygons.push_back(polygon4);
-    polygons.push_back(polygon5);
-    polygons.push_back(polygon6);
+    polygons_.push_back(polygon1);
+    polygons_.push_back(polygon2);
+    polygons_.push_back(polygon3);
+    polygons_.push_back(polygon4);
+    polygons_.push_back(polygon5);
+    polygons_.push_back(polygon6);
     //Создаём полигедрон из полигонов
-	polyhedron = new Polyhedron();
-	polyhedron->addPolygonsList(polygons);
-    previous.append(*polyhedron);
+    polyhedron_ = new Polyhedron();
+    polyhedron_->addPolygonsList(polygons_);
+    previous_.append(*polyhedron_);
 }
 
 void Scene::resizeGL(int nWidth, int nHeight)
@@ -160,50 +159,50 @@ void Scene::paintGL()
     glRotatef(yRot, 0.0f, 1.0f, 0.0f);
     glRotatef(zRot, 0.0f, 0.0f, 1.0f);
 
-    if(plane != nullptr)
-        polyhedron->polyhedronGroupSection(*plane, true, polyhedron, 0, getGLColor(color));
-    polyhedron->draw();
+    if(plane_ != nullptr)
+        polyhedron_->polyhedronGroupSection(*plane_, true, polyhedron_, 0, getGLColor(color_));
+    polyhedron_->draw();
 }
 
-void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
+void Scene::clipping(array<int, 3> &arr, double eq, const QColor &color)
 {
-    if(plane != nullptr) delete plane;
-    plane = new Plane(arr[0], arr[1], arr[2], eq);
-    color = clr;
+    if(plane_ != nullptr) delete plane_;
+    plane_ = new Plane(arr[0], arr[1], arr[2], eq);
+    color_ = color;
     this->updateGL();
-    previous.append(*polyhedron);
-    emit clipChanged(previous.size()-1);
+    previous_.append(*polyhedron_);
+    emit clipChanged(previous_.size()-1);
 }
 
 void Scene::clearAll()
 {
-    polyhedron->clear();
-	polyhedron->addPolygonsList(polygons);
-    previous.clear();
-    previous.append(*polyhedron);
+    polyhedron_->clear();
+    polyhedron_->addPolygonsList(polygons_);
+    previous_.clear();
+    previous_.append(*polyhedron_);
     emit clipChanged(0);
-    delete plane;
-    plane = nullptr;
+    delete plane_;
+    plane_ = nullptr;
     updateGL();
 }
 
 void Scene::undo()
 {
-    *polyhedron = previous[previous.size()-2];
-    previous.remove(previous.size() - 1);
-    emit clipChanged(previous.size()-1);
-    delete plane;
-    plane = nullptr;
+    *polyhedron_ = previous_[previous_.size()-2];
+    previous_.remove(previous_.size() - 1);
+    emit clipChanged(previous_.size()-1);
+    delete plane_;
+    plane_ = nullptr;
     updateGL();
 }
 
 void Scene::showScene(int value)
 {
     qDebug() << "value set:" << value;
-    if(value >= previous.size()) return;
-    *polyhedron = previous[value];
-    delete plane;
-    plane = nullptr;
+    if(value >= previous_.size()) return;
+    *polyhedron_ = previous_[value];
+    delete plane_;
+    plane_ = nullptr;
     updateGL();
 }
 
@@ -377,8 +376,8 @@ void Scene::drawFigure()
     glDrawElements(GL_TRIANGLES, 20, GL_UNSIGNED_BYTE, IndexArray);
 }
 
-array<double, 4> Scene::getGLColor(const QColor &color_)
+array<double, 4> Scene::getGLColor(const QColor &color)
 {
     //array<double, 4> color = {color_.red()/255.0, color_.green()/255.0, color_.blue()/255.0, 0.5f };
-    return array<double, 4>({color_.red()/255.0, color_.green()/255.0, color_.blue()/255.0, 0.5f });
+    return array<double, 4>({color.red()/255.0, color.green()/255.0, color.blue()/255.0, 0.5f });
 }
