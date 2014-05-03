@@ -157,7 +157,6 @@ void Scene::paintGL()
 
     if(plane != nullptr)
         polyhedron->polyhedronGroupSection(*plane, true, polyhedron, 0, getGLColor(color));
-
     polyhedron->draw();
 }
 
@@ -166,8 +165,6 @@ void Scene::clipping(array<int, 3> arr, double eq, QColor clr)
     if(plane != nullptr) delete plane;
     plane = new Plane(arr[0], arr[1], arr[2], eq);
     color = clr;
-    qDebug() << "coef:" << arr[0] << arr[1] << arr[2] << eq;
-    qDebug() << "color" << color.toRgb();
     this->updateGL();
     previous.append(*polyhedron);
     emit clipChanged(previous.size()-1);
