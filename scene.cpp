@@ -11,7 +11,7 @@ GLubyte IndexArray[20][3];
 
 Scene::Scene(QWidget* parent) : QGLWidget(parent), plane_(nullptr)
 {
-    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.1;
+    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.5;
 }
 
 void Scene::initializeGL()
@@ -127,6 +127,12 @@ void Scene::initializeGL()
     //Создаём полигедрон из полигонов
     polyhedron_ = new Polyhedron();
     polyhedron_->addPolygonsList(polygons_);
+    Plane p1(0,0,1,1);
+    Plane p2(0,1,0,1);
+    Plane p3(1,0,0,1);
+    polyhedron_->polyhedronGroupSection(p1, true, polyhedron_, 0, getGLColor(Qt::blue));
+    polyhedron_->polyhedronGroupSection(p2, true, polyhedron_, 0, getGLColor(Qt::blue));
+    polyhedron_->polyhedronGroupSection(p3, true, polyhedron_, 0, getGLColor(Qt::blue));
     previous_.append(*polyhedron_);
 }
 
