@@ -11,7 +11,7 @@ GLubyte IndexArray[20][3];
 
 Scene::Scene(QWidget* parent) : QGLWidget(parent), plane_(nullptr)
 {
-    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.5;
+    xRot=-90; yRot=0; zRot=0; zTra=0; nSca=0.7;
 }
 
 void Scene::initializeGL()
@@ -127,9 +127,9 @@ void Scene::initializeGL()
     //Создаём полигедрон из полигонов
     polyhedron_ = new Polyhedron();
     polyhedron_->addPolygonsList(polygons_);
-    Plane p1(0,0,1,1);
-    Plane p2(0,1,0,1);
-    Plane p3(1,0,0,1);
+    Plane p1(0,0,1,0.5);
+    Plane p2(0,1,0,0.5);
+    Plane p3(1,0,0,0.5);
     polyhedron_->polyhedronGroupSection(p1, true, polyhedron_, 0, getGLColor(Qt::blue));
     polyhedron_->polyhedronGroupSection(p2, true, polyhedron_, 0, getGLColor(Qt::blue));
     polyhedron_->polyhedronGroupSection(p3, true, polyhedron_, 0, getGLColor(Qt::blue));
@@ -185,6 +185,12 @@ void Scene::clearAll()
     polyhedron_->clear();
     polyhedron_->addPolygonsList(polygons_);
     previous_.clear();
+    Plane p1(0,0,1,0.5);
+    Plane p2(0,1,0,0.5);
+    Plane p3(1,0,0,0.5);
+    polyhedron_->polyhedronGroupSection(p1, true, polyhedron_, 0, getGLColor(Qt::blue));
+    polyhedron_->polyhedronGroupSection(p2, true, polyhedron_, 0, getGLColor(Qt::blue));
+    polyhedron_->polyhedronGroupSection(p3, true, polyhedron_, 0, getGLColor(Qt::blue));
     previous_.append(*polyhedron_);
     emit clipChanged(0);
     delete plane_;
